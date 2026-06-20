@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Dashboard') · {{ config('app.name', 'POS') }}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        }
+
+        .font-mono-num {
+            font-family: 'JetBrains Mono', ui-monospace, monospace;
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+    @stack('styles')
+</head>
+
+<body class="h-full text-slate-900 antialiased">
+    <div class="flex h-full min-h-screen">
+
+        {{-- Sidebar --}}
+        <aside class="hidden lg:flex lg:flex-col w-64 shrink-0 bg-[#11132B] text-slate-300">
+            <div class="flex items-center gap-2 px-6 h-16 border-b border-white/10">
+                <div
+                    class="h-8 w-8 rounded-md bg-indigo-500 flex items-center justify-center font-mono-num font-semibold text-white text-sm">
+                    PO</div>
+                <span class="font-semibold text-white tracking-tight">{{ config('app.name', 'POS System') }}</span>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-sm">
+                <div>
+                    <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Overview</p>
+                    <x-nav-link href="{{ route('admin.dashboard') ?? '#' }}" icon="chart-bar"
+                        :active="request()->routeIs('admin.dashboard')">Dashboard</x-nav-link>
+                </div>
+
+                <div>
+                    <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Catalog</p>
+                    <x-nav-link href="{{ route('admin.products.index') }}" icon="cube"
+                        :active="request()->routeIs('admin.products.*')">Products</x-nav-link>
+                    <x-nav-link href="{{ route('admin.categories.index') }}" icon="tag"
+                        :active="request()->routeIs('admin.categories.*')">Categories</x-nav-link>
+                    <x-nav-link href="{{ route('admin.units.index') }}" icon="scale"
+                        :active="request()->routeIs('admin.units.*')">Units</x-nav-link>
+                </div>
+
+                <div>
+                    <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Inventory</p>
+                    <x-nav-link href="#" icon="truck" :active="false">Suppliers</x-nav-link>
+                    <x-nav-link href="#" icon="clipboard-list" :active="false">Purchases</x-nav-link>
+                    <x-nav-link href="#" icon="adjustments" :active="false">Stock Adjustments</x-nav-link>
+                </div>
+
+                <div>
+                    <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Sales</p>
+                    <x-nav-link href="#" icon="users" :active="false">Customers</x-nav-link>
+                    <x-nav-link href="#" icon="receipt" :active="false">Transactions</x-nav-link>
+                    <x-nav-link href="#" icon="document-report" :active="false">Reports</x-nav-link>
+                </div>
+
+                <div>
+                    <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">System</p>
+                    <x-nav-link href="#" icon="cog" :active="false">Settings</x-nav-link>
+                    <x-nav-link href="#" icon="shield-check" :active="false">Users & Roles</x-nav-link>
+                    <x-nav-link href="#" icon="clock" :active="false">Activity Log</x-nav-link>
+                </div>
+            </nav>
+
+            <div class="border-t border-white/10 px-4 py-4">
+                {{-- <a href="{{ route('pos.register') ?? '#' }}" --}}
+                <a href="#"
+                    class="flex items-center justify-center gap-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 transition px-3 py-2.5 text-sm font-medium text-white">
+                    Open POS Register
+                </a>
+            </div>
+        </aside>
+
+        {{-- Main column --}}
+        <div class="flex-1 flex flex-col min-w-0">
+            {{-- Topbar --}}
+            <header
+                class="sticky top-0 z-20 flex items-center justify-between h-16 px-4 sm:px-6 bg-white border-b border-slate-200">
+                <div class="flex items-center gap-3">
+                    <button id="mobile-menu-btn" class="lg:hidden p-2 -ml-2 text-slate-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <h1 class="text-lg font-semibold text-slate-900">@yield('page-title', 'Dashboard')</h1>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    @auth
+                        <div class="relative">
+                            <button id="user-menu-btn" class="flex items-center gap-2 text-sm">
+                                <img src="{{ auth()->user()->avatarUrl() }}" class="w-8 h-8 rounded-full" alt="">
+                                <span class="hidden sm:block font-medium text-slate-700">{{ auth()->user()->name }}</span>
+                            </button>
+                            <div id="user-menu"
+                                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-slate-200 py-1 text-sm">
+                                <a href="{{ route('profile.edit') ?? '#' }}"
+                                    class="block px-4 py-2 text-slate-700 hover:bg-slate-50">Profile</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50">Log out</button>
+                                </form>
+                            </div>
+                        </div>
+                    @endauth
+                </div>
+            </header>
+
+            {{-- Flash messages --}}
+            <div class="px-4 sm:px-6">
+                @if (session('success'))
+                    <div
+                        class="mt-4 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 text-sm">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="mt-4 rounded-lg bg-red-50 border border-red-200 text-red-800 px-4 py-3 text-sm">
+                        {{ session('error') }}
+                    </div>
+                @endif
+            </div>
+
+            <main class="flex-1 px-4 sm:px-6 py-6">
+                @yield('content')
+            </main>
+        </div>
+    </div>
+
+    @stack('scripts')
+</body>
+
+</html>

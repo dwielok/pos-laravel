@@ -11,7 +11,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductService
 {
@@ -130,9 +131,11 @@ class ProductService
     {
         $filename = 'products/' . Str::uuid() . '.webp';
 
-        $encoded = Image::read($image)
+        $manager = new ImageManager(new Driver());
+
+        $encoded = $manager->decode($image)
             ->scaleDown(width: 1000, height: 1000)
-            ->toWebp(quality: 85);
+            ->encodeUsingFileExtension('webp', quality: 85);
 
         Storage::disk('public')->put($filename, (string) $encoded);
 
