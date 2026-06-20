@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
@@ -95,7 +96,7 @@ class Sale extends Model
         return $this->hasMany(SaleRefund::class);
     }
 
-    public function stockMovements(): HasMany
+    public function stockMovements(): MorphMany
     {
         return $this->morphMany(StockMovement::class, 'reference');
     }
@@ -150,7 +151,7 @@ class Sale extends Model
         return LogOptions::defaults()
             ->logOnly(['status', 'total_cents', 'paid_cents'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs()
+            ->dontLogEmptyChanges()
             ->useLogName('sale');
     }
 }
