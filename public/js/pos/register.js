@@ -280,12 +280,12 @@ $(function () {
         }
 
         cart.items.forEach(item => {
-            const lineTotal = ((item.product.selling_price_cents * item.quantity) / 100).toFixed(2);
+            const lineTotal = ((item.product.selling_price_cents * item.quantity)).toFixed(0);
             $cartItems.append(`
                 <div class="flex items-center gap-2 py-2 border-b border-slate-100" data-product-id="${item.product.id}">
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-slate-900 truncate">${escapeHtml(item.product.name)}</p>
-                        <p class="text-xs text-slate-400 font-mono-num">${(item.product.selling_price_cents / 100).toFixed(2)} each</p>
+                        <p class="text-xs text-slate-400 font-mono-num">${(item.product.selling_price_cents).toFixed(0)} each</p>
                     </div>
                     <div class="flex items-center gap-1">
                         <button class="qty-decrease w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50">−</button>
@@ -298,10 +298,10 @@ $(function () {
             `);
         });
 
-        $('#cart-subtotal').text((totals.subtotal_cents / 100).toFixed(2));
-        $('#cart-discount').text((totals.discount_cents / 100).toFixed(2));
-        $('#cart-tax').text((totals.tax_cents / 100).toFixed(2));
-        $('#cart-total').text((totals.total_cents / 100).toFixed(2));
+        $('#cart-subtotal').text((totals.subtotal_cents).toFixed(0));
+        $('#cart-discount').text((totals.discount_cents).toFixed(0));
+        $('#cart-tax').text((totals.tax_cents).toFixed(0));
+        $('#cart-total').text((totals.total_cents).toFixed(0));
         $('#checkout-btn').prop('disabled', cart.isEmpty());
     }
 
@@ -340,7 +340,7 @@ $(function () {
     $('#checkout-btn').on('click', function () {
         if (cart.isEmpty()) return;
         $('#payment-modal').removeClass('hidden');
-        $('#payment-amount-input').val((cart.computeTotals().total_cents / 100).toFixed(2)).focus();
+        $('#payment-amount-input').val((cart.computeTotals().total_cents).toFixed(0)).focus();
     });
 
     $('#payment-form').on('submit', async function (e) {
@@ -348,7 +348,7 @@ $(function () {
 
         const totals = cart.computeTotals();
         const paidAmount = parseFloat($('#payment-amount-input').val()) || 0;
-        const paidCents = Math.round(paidAmount * 100);
+        const paidCents = Math.round(paidAmount);
 
         if (paidCents < totals.total_cents) {
             flashMessage('Payment amount is less than the total due.', 'error');
@@ -395,7 +395,7 @@ $(function () {
                             discount_type: i.discount_type, discount_value: i.discount_value,
                         })),
                         payments: payload.payments.map(p => ({
-                            method: p.method, amount: p.amount_cents / 100, reference_number: p.reference_number,
+                            method: p.method, amount: p.amount_cents, reference_number: p.reference_number,
                         })),
                     }),
                 });
@@ -438,8 +438,8 @@ $(function () {
         const $modal = $('#receipt-modal');
         $modal.find('#receipt-invoice-number').text(sale.invoice_number);
         $modal.find('#receipt-offline-note').toggleClass('hidden', !sale.offline);
-        $modal.find('#receipt-total').text((sale.total_cents / 100).toFixed(2));
-        $modal.find('#receipt-change').text((sale.change_cents / 100).toFixed(2));
+        $modal.find('#receipt-total').text((sale.total_cents).toFixed(0));
+        $modal.find('#receipt-change').text((sale.change_cents).toFixed(0));
         $modal.removeClass('hidden');
     }
 

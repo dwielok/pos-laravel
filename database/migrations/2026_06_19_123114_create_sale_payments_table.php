@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sale_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sale_id')->constrained()->cascadeOnDelete();
-            $table->enum('method', ['cash', 'card', 'bank_transfer', 'e_wallet', 'store_credit', 'other']);
+            $table->enum('method', ['cash', 'card', 'bank_transfer', 'e_wallet', 'store_credit', 'other', 'qris']);
             $table->unsignedBigInteger('amount_cents');
             $table->string('reference_number')->nullable(); // card auth code, transfer ref, etc.
             $table->timestamps();

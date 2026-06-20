@@ -28,7 +28,7 @@ class StoreSaleRequest extends FormRequest
             'items.*.discount_value' => ['nullable', 'numeric', 'min:0'],
 
             'payments' => ['required', 'array', 'min:1'],
-            'payments.*.method' => ['required', Rule::in(['cash', 'card', 'bank_transfer', 'e_wallet', 'store_credit', 'other'])],
+            'payments.*.method' => ['required', Rule::in(['cash', 'card', 'bank_transfer', 'e_wallet', 'store_credit', 'other', 'qris'])],
             'payments.*.amount' => ['required', 'numeric', 'min:0'],
             'payments.*.reference_number' => ['nullable', 'string', 'max:255'],
         ];
