@@ -34,6 +34,9 @@ class ProductService
     public function create(array $data, ?UploadedFile $image = null): Product
     {
         return DB::transaction(function () use ($data, $image) {
+            $initialStock = $data['initial_stock'] ?? null;
+            $warehouseId = $data['warehouse_id'] ?? null;
+
             $data['slug'] = $this->uniqueSlug($data['name']);
             $data['sku'] = $data['sku'] ?? $this->skuGenerator->generate($data['category_name'] ?? null);
 
@@ -41,9 +44,27 @@ class ProductService
                 $data['image_path'] = $this->storeImage($image);
             }
 
-            unset($data['category_name']); // not a column, only used for SKU prefix hinting
+            unset(
+                $data['category_name'],
+                $data['initial_stock'],
+                $data['warehouse_id']
+            );
 
-            return $this->productRepository->create($data);
+            $product = $this->productRepository->create($data);
+
+            if (
+                $product->track_stock &&
+                $warehouseId &&
+                $initialStock > 0
+            ) {
+                $product->stockLevels()->create([
+                    'warehouse_id' => $warehouseId,
+                    'quantity' => $initialStock,
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return $product;
         });
     }
 
