@@ -16,7 +16,7 @@
 $(function () {
     const $app = $('#pos-app');
 
-    $(document).on('submit', '#pairing-form', function (e) {
+    $("#pairing-form").on('submit', function (e) {
         // e.preventDefault();
         const token = $('#pairing-token-input').val().trim();
         if (!token) return;

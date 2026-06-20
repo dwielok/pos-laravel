@@ -71,8 +71,10 @@
 
                 <div>
                     <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Sales</p>
-                    <x-nav-link href="#" icon="users" :active="false">Customers</x-nav-link>
-                    <x-nav-link href="#" icon="receipt" :active="false">Transactions</x-nav-link>
+                    <x-nav-link href="{{ route('admin.customers.index') }}" icon="users"
+                        :active="request()->routeIs('admin.customers.*')">Customers</x-nav-link>
+                    <x-nav-link href="{{ route('admin.sales.index') }}" icon="receipt"
+                        :active="request()->routeIs('admin.sales.*')">Transactions</x-nav-link>
                     <x-nav-link href="#" icon="document-report" :active="false">Reports</x-nav-link>
                 </div>
 

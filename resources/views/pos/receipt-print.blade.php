@@ -95,7 +95,7 @@
                 <td class="small">{{ $item->quantity }} x
                     {{ $store['currency_symbol'] }}{{ $item->unitPrice()->formatted() }}</td>
                 <td class="right">
-                    {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromCents($item->total_cents)->formatted() }}
+                    {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromUnits($item->total_cents)->formatted() }}
                 </td>
             </tr>
         @endforeach
@@ -107,14 +107,14 @@
         <tr>
             <td>Subtotal</td>
             <td class="right">
-                {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromCents($sale->subtotal_cents)->formatted() }}
+                {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromUnits($sale->subtotal_cents)->formatted() }}
             </td>
         </tr>
         @if ($sale->discount_cents > 0)
             <tr>
                 <td>Discount</td>
                 <td class="right">
-                    -{{ $store['currency_symbol'] }}{{ \App\Support\Money::fromCents($sale->discount_cents)->formatted() }}
+                    -{{ $store['currency_symbol'] }}{{ \App\Support\Money::fromUnits($sale->discount_cents)->formatted() }}
                 </td>
             </tr>
         @endif
@@ -122,7 +122,7 @@
             <tr>
                 <td>Tax</td>
                 <td class="right">
-                    {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromCents($sale->tax_cents)->formatted() }}
+                    {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromUnits($sale->tax_cents)->formatted() }}
                 </td>
             </tr>
         @endif
@@ -133,13 +133,13 @@
         <tr>
             <td>Paid</td>
             <td class="right">
-                {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromCents($sale->paid_cents)->formatted() }}
+                {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromUnits($sale->paid_cents)->formatted() }}
             </td>
         </tr>
         <tr>
             <td>Change</td>
             <td class="right">
-                {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromCents($sale->change_cents)->formatted() }}
+                {{ $store['currency_symbol'] }}{{ \App\Support\Money::fromUnits($sale->change_cents)->formatted() }}
             </td>
         </tr>
     </table>

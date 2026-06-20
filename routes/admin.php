@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\StockAdjustmentController;
 use App\Http\Controllers\Admin\StockMovementController;
 use App\Http\Controllers\Admin\SupplierController;
@@ -61,4 +63,14 @@ Route::middleware(['auth', 'verified'])
         Route::post('registers', [RegisterController::class, 'store'])->name('registers.store');
         Route::post('registers/{register}/deactivate', [RegisterController::class, 'deactivate'])->name('registers.deactivate');
         Route::post('registers/{register}/regenerate-token', [RegisterController::class, 'regenerateToken'])->name('registers.regenerate-token');
+
+        // --- Customer Module -------------------------------------------------
+        Route::resource('customers', CustomerController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+
+        // --- Sales Module ------------------------------------------------------
+        Route::resource('sales', SaleController::class)->only(['index', 'show']);
+        Route::post('sales/{sale}/cancel', [SaleController::class, 'cancel'])->name('sales.cancel');
+        Route::post('sales/{sale}/refund', [SaleController::class, 'refund'])->name('sales.refund');
+        Route::get('sales/{sale}/reprint', [SaleController::class, 'reprint'])->name('sales.reprint');
+        Route::get('sales/{sale}/reprint-pdf', [SaleController::class, 'reprintPdf'])->name('sales.reprint-pdf');
     });
