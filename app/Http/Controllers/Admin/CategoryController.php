@@ -8,13 +8,20 @@ use App\Models\Category;
 use App\Repositories\Contracts\CategoryRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $categoryRepository,
-    ) {
-        $this->middleware('can:categories.manage');
+    ) {}
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:categories.manage'),
+        ];
     }
 
     public function index(): View
