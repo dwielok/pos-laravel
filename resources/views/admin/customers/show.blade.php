@@ -3,7 +3,7 @@
 @section('page-title', $customer->name)
 
 @section('content')
-    <div class="max-w-4xl space-y-5">
+    <div class="space-y-5">
         <a href="{{ route('admin.customers.index') }}" class="text-sm text-slate-500 hover:text-slate-700">&larr; Back to
             Customers</a>
 

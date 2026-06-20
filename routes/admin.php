@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\RegisterController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\StockAdjustmentController;
 use App\Http\Controllers\Admin\StockMovementController;
@@ -28,9 +30,9 @@ Route::middleware(['auth', 'verified'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('dashboard', function () {
-            return "Hello world";
-        })->name("dashboard");
+
+        // --- Dashboard --------------------------------------------------
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         // --- Product Module ---------------------------------------------
         Route::resource('products', ProductController::class)->except(['show']);
@@ -73,4 +75,12 @@ Route::middleware(['auth', 'verified'])
         Route::post('sales/{sale}/refund', [SaleController::class, 'refund'])->name('sales.refund');
         Route::get('sales/{sale}/reprint', [SaleController::class, 'reprint'])->name('sales.reprint');
         Route::get('sales/{sale}/reprint-pdf', [SaleController::class, 'reprintPdf'])->name('sales.reprint-pdf');
+
+        // --- Reporting Module ----------------------------------------------
+        Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+        Route::get('reports/profit', [ReportController::class, 'profit'])->name('reports.profit');
+        Route::get('reports/inventory', [ReportController::class, 'inventory'])->name('reports.inventory');
+        Route::get('reports/sales/export/{format}', [ReportController::class, 'exportSales'])->name('reports.sales.export');
+        Route::get('reports/profit/export/{format}', [ReportController::class, 'exportProfit'])->name('reports.profit.export');
+        Route::get('reports/inventory/export/{format}', [ReportController::class, 'exportInventory'])->name('reports.inventory.export');
     });
