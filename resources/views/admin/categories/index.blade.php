@@ -3,7 +3,7 @@
 @section('page-title', 'Categories')
 
 @section('content')
-    <div class="space-y-5 max-w-4xl">
+    <div class="space-y-5 ">
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-xl font-semibold text-slate-900">Categories</h2>
@@ -119,28 +119,29 @@
         </form>
     </x-modal>
 
-    @push('scripts')
-        <script>
-            document.querySelectorAll('[data-modal-target="edit-category"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.dataset.id;
-
-                    document.getElementById('edit-category-form').action =
-                        `/admin/categories/${id}`;
-
-                    document.getElementById('edit-name').value =
-                        this.dataset.name || '';
-
-                    document.getElementById('edit-parent').value =
-                        this.dataset.parent || '';
-
-                    document.getElementById('edit-description').value =
-                        this.dataset.description || '';
-
-                    document.getElementById('edit-active').checked =
-                        this.dataset.active == '1';
-                });
-            });
-        </script>
-    @endpush
 @endsection
+
+@push('scripts')
+    <script>
+        document.querySelectorAll('[data-modal-target="edit-category"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.dataset.id;
+
+                document.getElementById('edit-category-form').action =
+                    `/admin/categories/${id}`;
+
+                document.getElementById('edit-name').value =
+                    this.dataset.name || '';
+
+                document.getElementById('edit-parent').value =
+                    this.dataset.parent || '';
+
+                document.getElementById('edit-description').value =
+                    this.dataset.description || '';
+
+                document.getElementById('edit-active').checked =
+                    this.dataset.active == '1';
+            });
+        });
+    </script>
+@endpush

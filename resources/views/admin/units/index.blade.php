@@ -3,7 +3,7 @@
 @section('page-title', 'Units')
 
 @section('content')
-    <div class="space-y-5 max-w-3xl">
+    <div class="space-y-5 ">
         <div class="flex items-center justify-between">
             <div>
                 <h2 class="text-xl font-semibold text-slate-900">Units of Measure</h2>
