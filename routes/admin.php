@@ -61,7 +61,4 @@ Route::middleware(['auth', 'verified'])
         Route::post('registers', [RegisterController::class, 'store'])->name('registers.store');
         Route::post('registers/{register}/deactivate', [RegisterController::class, 'deactivate'])->name('registers.deactivate');
         Route::post('registers/{register}/regenerate-token', [RegisterController::class, 'regenerateToken'])->name('registers.regenerate-token');
-
-        // Dashboard, Inventory, Customers, Sales, Reports, Settings, Users
-        // route groups are appended here in subsequent phases.
     });

@@ -15,17 +15,32 @@
  */
 $(function () {
     const $app = $('#pos-app');
-    const registerCode = $app.data('register-code');
-    const warehouseId = $app.data('warehouse-id');
 
-    let registerToken = localStorage.getItem(`pos_register_token_${registerCode}`);
-    const db = new PosDatabase(registerCode);
-    const cart = new Cart();
+    $(document).on('submit', '#pairing-form', function (e) {
+        // e.preventDefault();
+        const token = $('#pairing-token-input').val().trim();
+        if (!token) return;
+        localStorage.setItem('pos_register_token', token);
+        window.location.reload();
+    });
+
+    // One physical device is paired to exactly one register, so storage is
+    // keyed by a single fixed name -- not by a "register code" we can't
+    // actually know before pairing happens (pairing IS what tells us which
+    // register/warehouse this device belongs to).
+    let registerToken = localStorage.getItem('pos_register_token');
+    let warehouseId = localStorage.getItem('pos_warehouse_id');
 
     if (!registerToken) {
         showPairingPrompt();
         return;
     }
+
+    // IndexedDB is namespaced by token rather than a human-readable code --
+    // tokens are unique per register by construction, which a guessed code
+    // is not.
+    const db = new PosDatabase(registerToken.slice(0, 12));
+    const cart = new Cart();
 
     const syncQueue = new SyncQueue(db, registerToken, {
         onStatusChange: updateConnectionStatus,
@@ -43,7 +58,22 @@ $(function () {
     init();
 
     async function init() {
-        await syncQueue.refreshCatalog().catch(() => {});
+        // Resolve (and persist) this device's warehouse_id from the server
+        // on first online boot, since pairing only gives us a token -- the
+        // warehouse it belongs to is authoritative server-side.
+        if (!warehouseId && navigator.onLine) {
+            try {
+                const response = await fetch('/api/v1/ping', { headers: syncQueue.headers() });
+                if (response.ok) {
+                    const data = await response.json();
+                    warehouseId = data.warehouse_id;
+                    localStorage.setItem('pos_warehouse_id', warehouseId);
+                }
+            } catch (e) { /* will retry on next online event */ }
+        }
+        $app.attr('data-warehouse-id', warehouseId || '');
+
+        await syncQueue.refreshCatalog().catch(() => { });
         await syncQueue.syncPendingSales();
         renderPendingBadge();
         updateConnectionStatus(navigator.onLine ? 'online' : 'offline');
@@ -60,14 +90,6 @@ $(function () {
     function showPairingPrompt() {
         $('#pairing-modal').removeClass('hidden');
     }
-
-    $('#pairing-form').on('submit', function (e) {
-        e.preventDefault();
-        const token = $('#pairing-token-input').val().trim();
-        if (!token) return;
-        localStorage.setItem(`pos_register_token_${registerCode}`, token);
-        window.location.reload();
-    });
 
     // --- Connection status indicator -----------------------------------------
     function updateConnectionStatus(status, meta = {}) {

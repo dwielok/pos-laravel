@@ -28,3 +28,11 @@ Route::middleware(['auth', 'register.session'])
         Route::post('sales/sync', [SaleSyncController::class, 'store'])->name('api.sales.sync');
         Route::get('ping', [SaleSyncController::class, 'ping'])->name('api.ping');
     });
+
+Route::middleware('auth')->get('/v1/me', function () {
+    return [
+        'authenticated' => auth()->check(),
+        'user' => auth()->user()?->only(['id', 'name', 'email']),
+        'session_id' => session()->getId(),
+    ];
+});

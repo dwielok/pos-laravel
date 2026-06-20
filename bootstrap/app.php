@@ -22,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
             // responsibility is visible from this one place.
             Route::middleware('web')->group(base_path('routes/admin.php'));
             Route::middleware('web')->group(base_path('routes/pos.php'));
-            Route::prefix('api')->middleware('api')->group(base_path('routes/api.php'));
+            Route::prefix('api')->middleware('web')->group(base_path('routes/api.php'));
         },
     )
     ->withMiddleware(function (Middleware $middleware) {

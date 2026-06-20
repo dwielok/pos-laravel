@@ -79,6 +79,8 @@
                 <div>
                     <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">System</p>
                     <x-nav-link href="#" icon="cog" :active="false">Settings</x-nav-link>
+                    <x-nav-link href="{{ route('admin.registers.index') }}" icon="shield-check" :active="request()->routeIs('admin.registers.*')">POS
+                        Registers</x-nav-link>
                     <x-nav-link href="#" icon="shield-check" :active="false">Users & Roles</x-nav-link>
                     <x-nav-link href="#" icon="clock" :active="false">Activity Log</x-nav-link>
                 </div>
