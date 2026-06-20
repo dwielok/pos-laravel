@@ -65,7 +65,9 @@
                     </div>
                     <input type="text" id="barcode-input" class="hidden">
                 </div>
-                <div id="search-results" class="flex-1 overflow-y-auto px-2 py-1"></div>
+                <div id="search-results"
+                    class="flex-1 overflow-y-auto p-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 content-start">
+                </div>
             </div>
 
             {{-- Right: cart --}}
@@ -117,6 +119,7 @@
                         <option value="cash">Cash</option>
                         <option value="card">Card</option>
                         <option value="bank_transfer">Bank Transfer</option>
+                        <option value="qris">QRIS</option>
                         <option value="e_wallet">E-Wallet</option>
                     </select>
                 </div>

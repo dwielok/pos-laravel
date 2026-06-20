@@ -115,12 +115,14 @@ $(function () {
     $('#product-search-input').on('input', function () {
         clearTimeout(searchDebounce);
         const term = $(this).val().trim();
-        if (term.length < 1) {
-            $('#search-results').empty();
-            return;
-        }
+        // if (term.length < 1) {
+        //     $('#search-results').empty();
+        //     return;
+        // }
         searchDebounce = setTimeout(() => runSearch(term), 200);
     });
+
+    runSearch("")
 
     async function runSearch(term) {
         let results;
@@ -147,25 +149,66 @@ $(function () {
         const $results = $('#search-results').empty();
 
         if (products.length === 0) {
-            $results.append('<p class="text-sm text-slate-400 px-3 py-4">No products found.</p>');
+            $results.append(`
+            <div class="col-span-full text-center text-slate-400 py-8">
+                No products found.
+            </div>
+        `);
             return;
         }
 
         products.forEach(p => {
-            const price = (p.selling_price_cents / 100).toFixed(2);
+            const price = (p.selling_price_cents).toFixed(0);
             const lowStock = p.track_stock && p.stock_quantity <= 0;
+
             $results.append(`
-                <button type="button" class="product-result w-full flex items-center justify-between gap-3 px-3 py-2.5 hover:bg-indigo-50 rounded-lg text-left" data-product-id="${p.id}">
-                    <div class="min-w-0">
-                        <p class="font-medium text-slate-900 text-sm truncate">${escapeHtml(p.name)}</p>
-                        <p class="text-xs text-slate-400 font-mono-num">${escapeHtml(p.sku)} ${p.track_stock ? `· stock: ${p.stock_quantity}` : ''}</p>
+            <button
+                type="button"
+                class="product-result flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-indigo-500 hover:shadow-md transition-all text-left"
+                data-product-id="${p.id}"
+            >
+                <div class="w-full aspect-[4/3] bg-slate-100 flex items-center justify-center shrink-0">
+                    ${p.image_url
+                    ? `
+                            <img
+                                src="${p.image_url}"
+                                alt="${escapeHtml(p.name)}"
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                                onerror="this.parentElement.innerHTML='<div class=&quot;flex items-center justify-center w-full h-full text-slate-300&quot;><svg class=&quot;w-8 h-8&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;><path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;1.5&quot; d=&quot;M4 16l4-4a3 3 0 014.243 0L20 20M14 14l1-1a3 3 0 014.243 0L20 14M4 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z&quot;/></svg></div>';"
+                            >
+                        `
+                    : `
+                            <div class="flex items-center justify-center w-full h-full text-slate-300">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M4 16l4-4a3 3 0 014.243 0L20 20M14 14l1-1a3 3 0 014.243 0L20 14M4 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                        `
+                }
+                </div>
+
+                <div class="flex flex-col flex-1 p-3 w-full">
+                    <div class="mb-2">
+                        <h3 class="font-medium text-sm text-slate-900 line-clamp-2 leading-tight">
+                            ${escapeHtml(p.name)}
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-1 truncate">
+                            ${escapeHtml(p.sku)}
+                        </p>
                     </div>
-                    <div class="text-right shrink-0">
-                        <p class="font-mono-num font-semibold text-slate-900">${price}</p>
-                        ${lowStock ? '<p class="text-xs text-red-500">Out of stock</p>' : ''}
+
+                    <div class="mt-auto">
+                        <div class="flex items-center justify-between">
+                            <span class="font-semibold text-indigo-600 font-mono-num text-sm md:text-base">
+                                Rp ${price}
+                            </span>
+                        </div>
                     </div>
-                </button>
-            `);
+                </div>
+            </button>
+        `);
         });
 
         $results.find('.product-result').on('click', async function () {

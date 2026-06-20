@@ -26,7 +26,7 @@ class ProductSearchController extends Controller
     public function search(Request $request): JsonResponse
     {
         $request->validate([
-            'q' => ['required', 'string', 'min:1', 'max:100'],
+            'q' => ['nullable', 'string', 'min:1', 'max:100'],
         ]);
 
         /** @var Register $register */

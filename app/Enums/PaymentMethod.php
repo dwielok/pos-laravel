@@ -9,6 +9,7 @@ enum PaymentMethod: string
     case BankTransfer = 'bank_transfer';
     case EWallet = 'e_wallet';
     case StoreCredit = 'store_credit';
+    case QRIS = 'qris';
     case Other = 'other';
 
     public function label(): string
@@ -19,6 +20,7 @@ enum PaymentMethod: string
             self::BankTransfer => 'Bank Transfer',
             self::EWallet => 'E-Wallet',
             self::StoreCredit => 'Store Credit',
+            self::QRIS => 'QRIS',
             self::Other => 'Other',
         };
     }
