@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
+use App\Http\Controllers\Admin\RegisterController;
 use App\Http\Controllers\Admin\StockAdjustmentController;
 use App\Http\Controllers\Admin\StockMovementController;
 use App\Http\Controllers\Admin\SupplierController;
@@ -54,6 +55,12 @@ Route::middleware(['auth', 'verified'])
             ->name('stock-movements.index');
         Route::get('products/{product}/stock-movements', [StockMovementController::class, 'forProduct'])
             ->name('products.stock-movements');
+
+        // --- POS Registers (device pairing for offline-capable terminals) --
+        Route::get('registers', [RegisterController::class, 'index'])->name('registers.index');
+        Route::post('registers', [RegisterController::class, 'store'])->name('registers.store');
+        Route::post('registers/{register}/deactivate', [RegisterController::class, 'deactivate'])->name('registers.deactivate');
+        Route::post('registers/{register}/regenerate-token', [RegisterController::class, 'regenerateToken'])->name('registers.regenerate-token');
 
         // Dashboard, Inventory, Customers, Sales, Reports, Settings, Users
         // route groups are appended here in subsequent phases.

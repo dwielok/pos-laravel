@@ -85,8 +85,7 @@
             </nav>
 
             <div class="border-t border-white/10 px-4 py-4">
-                {{-- <a href="{{ route('pos.register') ?? '#' }}" --}}
-                <a href="#"
+                <a href="{{ route('pos.register') ?? '#' }}"
                     class="flex items-center justify-center gap-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 transition px-3 py-2.5 text-sm font-medium text-white">
                     Open POS Register
                 </a>
