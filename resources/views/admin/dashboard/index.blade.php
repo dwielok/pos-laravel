@@ -80,7 +80,7 @@
                             <div class="text-right">
                                 <p class="font-mono-num font-medium text-sm">{{ $product->total_quantity_sold }} sold</p>
                                 <p class="text-xs text-slate-400 font-mono-num">
-                                    {{ \App\Support\Money::fromCents($product->total_revenue_cents)->formatted() }}</p>
+                                    {{ \App\Support\Money::fromAmount($product->total_revenue_cents)->formatted() }}</p>
                             </div>
                         </div>
                     @empty
