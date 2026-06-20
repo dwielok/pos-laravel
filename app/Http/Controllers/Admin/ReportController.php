@@ -11,6 +11,7 @@ use App\Services\ReportService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -55,7 +56,7 @@ class ReportController extends Controller
         return view('admin.reports.inventory', compact('report', 'warehouses', 'warehouseId', 'from', 'to'));
     }
 
-    public function exportSales(Request $request, string $format): BinaryFileResponse|StreamedResponse
+    public function exportSales(Request $request, string $format): BinaryFileResponse|StreamedResponse|Response
     {
         $this->authorizeAbility('reports.sales');
         $this->authorizeAbility('reports.export');

@@ -43,7 +43,7 @@
             <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-sm">
                 <div>
                     <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Overview</p>
-                    <x-nav-link href="{{ route('admin.dashboard') ?? '#' }}" icon="chart-bar"
+                    <x-nav-link href="{{ route('admin.dashboard') }}" icon="chart-bar"
                         :active="request()->routeIs('admin.dashboard')">Dashboard</x-nav-link>
                 </div>
 
@@ -75,7 +75,8 @@
                         :active="request()->routeIs('admin.customers.*')">Customers</x-nav-link>
                     <x-nav-link href="{{ route('admin.sales.index') }}" icon="receipt"
                         :active="request()->routeIs('admin.sales.*')">Transactions</x-nav-link>
-                    <x-nav-link href="#" icon="document-report" :active="false">Reports</x-nav-link>
+                    <x-nav-link href="{{ route('admin.reports.sales') }}" icon="document-report"
+                        :active="request()->routeIs('admin.reports.*')">Reports</x-nav-link>
                 </div>
 
                 <div>

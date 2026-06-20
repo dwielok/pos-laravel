@@ -22,10 +22,10 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
             <x-stat-card label="Transactions" :value="$report['totals']['transaction_count']" />
-            <x-stat-card label="Subtotal" :value="number_format($report['totals']['subtotal'], 2)" />
-            <x-stat-card label="Discounts" :value="number_format($report['totals']['discount'], 2)" />
-            <x-stat-card label="Tax Collected" :value="number_format($report['totals']['tax'], 2)" />
-            <x-stat-card label="Total Revenue" :value="number_format($report['totals']['total'], 2)" />
+            <x-stat-card label="Subtotal" :value="number_format($report['totals']['subtotal'])" />
+            <x-stat-card label="Discounts" :value="number_format($report['totals']['discount'])" />
+            <x-stat-card label="Tax Collected" :value="number_format($report['totals']['tax'])" />
+            <x-stat-card label="Total Revenue" :value="number_format($report['totals']['total'])" />
         </div>
 
         <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
@@ -49,7 +49,7 @@
                             <td class="px-4 py-2.5 text-slate-600">{{ $row['cashier'] }}</td>
                             <td class="px-4 py-2.5 text-slate-600">{{ $row['warehouse'] }}</td>
                             <td class="px-4 py-2.5 text-right font-mono-num font-medium">
-                                {{ number_format($row['total'], 2) }}</td>
+                                {{ number_format($row['total']) }}</td>
                         </tr>
                     @empty
                         <tr>

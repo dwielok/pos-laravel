@@ -83,9 +83,9 @@ class ReportService
             ->map(fn($row) => [
                 'product_name' => $row->product_name,
                 'quantity_sold' => (int) $row->quantity_sold,
-                'revenue' => round($row->revenue_cents / 100, 2),
-                'cost' => round($row->cost_cents / 100, 2),
-                'profit' => round($row->profit_cents / 100, 2),
+                'revenue' => round($row->revenue_cents, 0),
+                'cost' => round($row->cost_cents, 0),
+                'profit' => round($row->profit_cents, 0),
                 'margin_percent' => $row->revenue_cents > 0
                     ? round(($row->profit_cents / $row->revenue_cents) * 100, 1)
                     : 0,
