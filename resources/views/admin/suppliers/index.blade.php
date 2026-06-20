@@ -9,7 +9,7 @@
                 <h2 class="text-xl font-semibold text-slate-900">Suppliers</h2>
                 <p class="text-sm text-slate-500 mt-0.5">{{ $suppliers->total() }} suppliers</p>
             </div>
-            @can('create', \App\Models\Supplier::class)
+            @can('suppliers.create')
                 <button type="button" data-modal-target="create-supplier"
                     class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm">
                     <x-icon name="plus" class="w-4 h-4" /> Add Supplier
