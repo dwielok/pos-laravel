@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\PurchaseController;
+use App\Http\Controllers\Admin\StockAdjustmentController;
+use App\Http\Controllers\Admin\StockMovementController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UnitController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +33,27 @@ Route::middleware(['auth', 'verified'])
         Route::resource('products', ProductController::class)->except(['show']);
         Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('units', UnitController::class)->only(['index', 'store', 'update', 'destroy']);
+
+        // --- Inventory Module ---------------------------------------------
+        Route::resource('suppliers', SupplierController::class)->only(['index', 'store', 'update', 'destroy']);
+
+        Route::resource('purchases', PurchaseController::class)->only(['index', 'create', 'store', 'show']);
+        Route::post('purchases/{purchase}/mark-ordered', [PurchaseController::class, 'markOrdered'])
+            ->name('purchases.mark-ordered');
+        Route::post('purchases/{purchase}/receive', [PurchaseController::class, 'receive'])
+            ->name('purchases.receive');
+        Route::post('purchases/{purchase}/cancel', [PurchaseController::class, 'cancel'])
+            ->name('purchases.cancel');
+
+        Route::resource('stock-adjustments', StockAdjustmentController::class)
+            ->only(['index', 'create', 'store', 'show']);
+        Route::post('stock-adjustments/{stockAdjustment}/approve', [StockAdjustmentController::class, 'approve'])
+            ->name('stock-adjustments.approve');
+
+        Route::get('stock-movements', [StockMovementController::class, 'index'])
+            ->name('stock-movements.index');
+        Route::get('products/{product}/stock-movements', [StockMovementController::class, 'forProduct'])
+            ->name('products.stock-movements');
 
         // Dashboard, Inventory, Customers, Sales, Reports, Settings, Users
         // route groups are appended here in subsequent phases.

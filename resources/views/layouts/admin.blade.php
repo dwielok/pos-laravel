@@ -59,9 +59,14 @@
 
                 <div>
                     <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Inventory</p>
-                    <x-nav-link href="#" icon="truck" :active="false">Suppliers</x-nav-link>
-                    <x-nav-link href="#" icon="clipboard-list" :active="false">Purchases</x-nav-link>
-                    <x-nav-link href="#" icon="adjustments" :active="false">Stock Adjustments</x-nav-link>
+                    <x-nav-link href="{{ route('admin.suppliers.index') }}" icon="truck"
+                        :active="request()->routeIs('admin.suppliers.*')">Suppliers</x-nav-link>
+                    <x-nav-link href="{{ route('admin.purchases.index') }}" icon="clipboard-list"
+                        :active="request()->routeIs('admin.purchases.*')">Purchases</x-nav-link>
+                    <x-nav-link href="{{ route('admin.stock-adjustments.index') }}" icon="adjustments"
+                        :active="request()->routeIs('admin.stock-adjustments.*')">Stock Adjustments</x-nav-link>
+                    <x-nav-link href="{{ route('admin.stock-movements.index') }}" icon="clock"
+                        :active="request()->routeIs('admin.stock-movements.index')">Stock Movements</x-nav-link>
                 </div>
 
                 <div>
