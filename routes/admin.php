@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -7,11 +8,14 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\RegisterController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StockAdjustmentController;
 use App\Http\Controllers\Admin\StockMovementController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -83,4 +87,25 @@ Route::middleware(['auth', 'verified'])
         Route::get('reports/sales/export/{format}', [ReportController::class, 'exportSales'])->name('reports.sales.export');
         Route::get('reports/profit/export/{format}', [ReportController::class, 'exportProfit'])->name('reports.profit.export');
         Route::get('reports/inventory/export/{format}', [ReportController::class, 'exportInventory'])->name('reports.inventory.export');
+
+        // --- Settings Module -------------------------------------------------
+        Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings/store', [SettingController::class, 'updateStore'])->name('settings.store.update');
+        Route::put('settings/tax', [SettingController::class, 'updateTax'])->name('settings.tax.update');
+        Route::put('settings/currency', [SettingController::class, 'updateCurrency'])->name('settings.currency.update');
+        Route::put('settings/receipt', [SettingController::class, 'updateReceipt'])->name('settings.receipt.update');
+        Route::post('settings/backups', [SettingController::class, 'createBackup'])->name('settings.backups.create');
+        Route::get('settings/backups/{filename}/download', [SettingController::class, 'downloadBackup'])->name('settings.backups.download');
+        Route::post('settings/backups/{filename}/restore', [SettingController::class, 'restoreBackup'])->name('settings.backups.restore');
+        Route::delete('settings/backups/{filename}', [SettingController::class, 'deleteBackup'])->name('settings.backups.delete');
+
+        // --- Users & RBAC ------------------------------------------------------
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+        Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
+        Route::put('roles/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
+        Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+        // --- Activity Log --------------------------------------------------
+        Route::get('activity-log', [ActivityLogController::class, 'index'])->name('activity-log.index');
     });
