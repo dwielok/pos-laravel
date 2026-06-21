@@ -16,7 +16,7 @@
                 <div class="relative">
                     <select name="warehouse_id" onchange="this.form.submit()"
                         class="w-full sm:w-auto pl-9 pr-4 py-2 bg-card border border-theme rounded-lg text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition appearance-none cursor-pointer">
-                        <option value="">🏪 All Warehouses</option>
+                        <option value="">All Warehouses</option>
                         @foreach ($warehouses as $warehouse)
                             <option value="{{ $warehouse->id }}" @selected($warehouseId == $warehouse->id)>{{ $warehouse->name }}
                             </option>
