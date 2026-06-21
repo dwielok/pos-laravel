@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Setting;
 use InvalidArgumentException;
 
 /**
@@ -97,12 +98,23 @@ final class Money
     }
 
     /**
-     * Returns plain Indonesian number format.
-     * Example: 1000000 => "1.000.000"
+     * Returns formatted currency based on database settings.
+     * Example:
+     * Rp 1.000.000
      */
     public function formatted(): string
     {
-        return "Rp " . number_format($this->amount, 0, ',', '.');
+        $amount = number_format($this->amount, 0, ',', '.');
+
+        $settings = Setting::where('group', 'currency')
+            ->pluck('value', 'key');
+
+        $symbol = $settings['symbol'] ?? 'Rp';
+        $position = $settings['position'] ?? 'before';
+
+        return $position === 'after'
+            ? "{$amount}{$symbol}"
+            : "{$symbol}{$amount}";
     }
 
     public function __toString(): string
