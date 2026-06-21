@@ -1,59 +1,114 @@
 @extends('layouts.admin')
 
 @section('page-title', 'Categories')
+@section('breadcrumb', 'Product Organization')
 
 @section('content')
-    <div class="space-y-5 ">
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="text-xl font-semibold text-slate-900">Categories</h2>
-                <p class="text-sm text-slate-500 mt-0.5">Organize products into categories and subcategories.</p>
+    <div class="space-y-6">
+        {{-- Header --}}
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary-green-light text-primary-green flex items-center justify-center">
+                    <x-icon name="tag" class="w-5 h-5" />
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-primary">Categories</h2>
+                    <div class="flex items-center gap-2 text-sm text-secondary">
+                        <span>{{ $categories->count() }} categories total</span>
+                        <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                        <span class="flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            {{ $categories->where('is_active', true)->count() }} active
+                        </span>
+                        <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                        <span>{{ $categories->where('parent_id', null)->count() }} root categories</span>
+                    </div>
+                </div>
             </div>
             <button type="button" data-modal-target="create-category"
-                class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2.5 text-sm font-medium text-white shadow-sm">
-                <x-icon name="plus" class="w-4 h-4" /> Add Category
+                class="inline-flex items-center gap-2 rounded-xl bg-primary-green hover:bg-primary-green-dark px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:shadow-md transition-all duration-200 group">
+                <x-icon name="plus" class="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
+                Add Category
             </button>
         </div>
 
-        <div class="bg-white rounded-xl border border-slate-200 divide-y divide-slate-100">
+        {{-- Categories List --}}
+        <div class="bg-card rounded-2xl border border-theme overflow-hidden shadow-sm hover:shadow-md transition-shadow">
             @forelse ($categories as $category)
-                <div class="px-5 py-4">
+                <div class="px-6 py-4 border-b border-theme last:border-0 hover:bg-primary-green-light/5 transition">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="font-medium text-slate-900">{{ $category->name }}</span>
-                            @if (!$category->is_active)
-                                <x-badge color="slate">Inactive</x-badge>
-                            @endif
-                            <span
-                                class="text-xs text-slate-400">{{ $category->products_count ?? $category->products()->count() }}
-                                products</span>
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div
+                                class="w-8 h-8 rounded-xl bg-primary-green-light/30 flex items-center justify-center flex-shrink-0">
+                                <x-icon name="folder" class="w-4 h-4 text-primary-green" />
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-semibold text-primary">{{ $category->name }}</span>
+                                    @if (!$category->is_active)
+                                        <x-badge color="gray">Inactive</x-badge>
+                                    @endif
+                                    @if ($category->children->isNotEmpty())
+                                        <x-badge color="blue" class="text-xs">
+                                            {{ $category->children->count() }} subcategories
+                                        </x-badge>
+                                    @endif
+                                </div>
+                                <div class="flex items-center gap-3 text-xs text-secondary mt-0.5">
+                                    <span class="flex items-center gap-1">
+                                        <x-icon name="cube" class="w-3 h-3" />
+                                        {{ $category->products_count ?? $category->products()->count() }} products
+                                    </span>
+                                    @if ($category->description)
+                                        <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                                        <span class="truncate max-w-[200px]">{{ $category->description }}</span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex gap-1">
+                        <div class="flex gap-1 flex-shrink-0 ml-4">
                             <button type="button" data-modal-target="edit-category" data-id="{{ $category->id }}"
                                 data-name="{{ $category->name }}" data-parent="{{ $category->parent_id }}"
-                                data-active="{{ $category->is_active }}"
-                                class="p-1.5 rounded-md text-slate-500 hover:bg-slate-100 hover:text-indigo-600">
+                                data-description="{{ $category->description }}" data-active="{{ $category->is_active }}"
+                                class="p-1.5 rounded-lg text-secondary hover:bg-primary-green-light hover:text-primary-green transition">
                                 <x-icon name="pencil" class="w-4 h-4" />
                             </button>
-                            </button>
                             <button type="button" data-modal-target="delete-category-{{ $category->id }}"
-                                class="p-1.5 rounded-md text-slate-500 hover:bg-red-50 hover:text-red-600">
+                                class="p-1.5 rounded-lg text-secondary hover:bg-red-50 hover:text-red-600 transition">
                                 <x-icon name="trash" class="w-4 h-4" />
                             </button>
                         </div>
                     </div>
 
+                    {{-- Subcategories --}}
                     @if ($category->children->isNotEmpty())
-                        <div class="mt-2 ml-4 pl-3 border-l-2 border-slate-100 space-y-1">
+                        <div class="mt-3 ml-4 pl-4 border-l-2 border-theme space-y-1.5">
                             @foreach ($category->children as $child)
-                                <div class="flex items-center justify-between text-sm py-1">
-                                    <span class="text-slate-600">{{ $child->name }}</span>
-                                    <div class="flex gap-1">
+                                <div
+                                    class="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg hover:bg-primary-green-light/10 transition group">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <x-icon name="folder" class="w-3.5 h-3.5 text-secondary opacity-50" />
+                                        <span
+                                            class="text-secondary group-hover:text-primary transition truncate">{{ $child->name }}</span>
+                                        @if (!$child->is_active)
+                                            <x-badge color="gray" class="text-[10px]">Inactive</x-badge>
+                                        @endif
+                                        <span class="text-xs text-secondary opacity-60">
+                                            ({{ $child->products_count ?? $child->products()->count() }} products)
+                                        </span>
+                                    </div>
+                                    <div class="flex gap-0.5">
                                         <button type="button" data-modal-target="edit-category"
                                             data-id="{{ $child->id }}" data-name="{{ $child->name }}"
-                                            data-parent="{{ $child->parent_id }}" data-active="{{ $child->is_active }}"
-                                            class="p-1 rounded text-slate-400 hover:text-indigo-600">
+                                            data-parent="{{ $child->parent_id }}"
+                                            data-description="{{ $child->description }}"
+                                            data-active="{{ $child->is_active }}"
+                                            class="p-1 rounded text-secondary opacity-0 group-hover:opacity-100 hover:text-primary-green transition">
                                             <x-icon name="pencil" class="w-3.5 h-3.5" />
+                                        </button>
+                                        <button type="button" data-modal-target="delete-category-{{ $child->id }}"
+                                            class="p-1 rounded text-secondary opacity-0 group-hover:opacity-100 hover:text-red-600 transition">
+                                            <x-icon name="trash" class="w-3.5 h-3.5" />
                                         </button>
                                     </div>
                                 </div>
@@ -62,85 +117,156 @@
                     @endif
                 </div>
 
-                <x-modal id="delete-category-{{ $category->id }}" title="Delete Category">
-                    <p class="text-sm text-slate-600">Delete <strong>{{ $category->name }}</strong>? This cannot be undone.
-                    </p>
-                    <form method="POST" action="{{ route('admin.categories.destroy', $category) }}"
-                        class="mt-4 flex justify-end gap-2">
-                        @csrf @method('DELETE')
-                        <button type="button" data-modal-close="delete-category-{{ $category->id }}"
-                            class="rounded-lg border border-slate-300 text-sm font-medium px-4 py-2 text-slate-600 hover:bg-slate-50">Cancel</button>
-                        <button type="submit"
-                            class="rounded-lg bg-red-600 hover:bg-red-500 text-sm font-medium px-4 py-2 text-white">Delete</button>
-                    </form>
+                {{-- Delete Modal --}}
+                <x-modal id="delete-category-{{ $category->id }}" title="Delete Category"
+                    description="This action cannot be undone" icon="danger">
+                    <div class="space-y-3">
+                        <div
+                            class="flex items-start gap-4 p-4 bg-red-50/50 dark:bg-red-900/10 rounded-xl border border-red-200 dark:border-red-800/50">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center">
+                                <x-icon name="alert-triangle" class="w-5 h-5" />
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-red-800 dark:text-red-200">
+                                    Delete <strong class="text-red-900 dark:text-red-100">{{ $category->name }}</strong>?
+                                </p>
+                                @if ($category->children->isNotEmpty())
+                                    <p class="text-xs text-red-600/70 dark:text-red-300/70 mt-1">
+                                        This category has {{ $category->children->count() }} subcategories that will also
+                                        be deleted.
+                                    </p>
+                                @endif
+                                @if ($category->products()->count() > 0)
+                                    <p class="text-xs text-red-600/70 dark:text-red-300/70">
+                                        {{ $category->products()->count() }} products will be uncategorized.
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <form method="POST" action="{{ route('admin.categories.destroy', $category) }}"
+                            class="flex justify-end gap-2">
+                            @csrf @method('DELETE')
+                            <button type="button" data-modal-close="delete-category-{{ $category->id }}"
+                                class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                                Cancel
+                            </button>
+                            <button type="submit"
+                                class="rounded-xl bg-red-600 hover:bg-red-700 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
+                                <x-icon name="trash" class="w-4 h-4" />
+                                Delete Category
+                            </button>
+                        </form>
+                    </div>
                 </x-modal>
             @empty
-                <div class="px-5 py-12 text-center text-slate-500">
-                    <p class="font-medium">No categories yet</p>
-                    <p class="text-sm mt-1">Create your first category to start organizing products.</p>
+                <div class="px-6 py-16 text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-2xl bg-primary-green-light/20 flex items-center justify-center mb-4">
+                            <x-icon name="folder" class="w-10 h-10 text-secondary opacity-30" />
+                        </div>
+                        <p class="text-lg font-medium text-primary">No categories yet</p>
+                        <p class="text-sm text-secondary mt-1">Create your first category to start organizing products</p>
+                        <button type="button" data-modal-target="create-category"
+                            class="inline-flex items-center gap-2 mt-4 rounded-xl bg-primary-green hover:bg-primary-green-dark px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:shadow-md transition-all duration-200">
+                            <x-icon name="plus" class="w-4 h-4" />
+                            Create Category
+                        </button>
+                    </div>
                 </div>
             @endforelse
         </div>
     </div>
 
-    <x-modal id="edit-category" title="Edit Category">
+    {{-- Edit Modal --}}
+    <x-modal id="edit-category" title="Edit Category" description="Update category details" icon="pencil">
         <form method="POST" id="edit-category-form">
             @csrf
             @method('PUT')
-
-            @include('admin.categories._fields', [
-                'isEdit' => true,
-            ])
+            @include('admin.categories._fields', ['isEdit' => true])
 
             <div class="mt-4 flex justify-end gap-2">
                 <button type="button" data-modal-close="edit-category"
-                    class="rounded-lg border border-slate-300 text-sm font-medium px-4 py-2 text-slate-600 hover:bg-slate-50">
+                    class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
                     Cancel
                 </button>
-
                 <button type="submit"
-                    class="rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium px-4 py-2 text-white">
-                    Save
+                    class="rounded-xl bg-primary-green hover:bg-primary-green-dark text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
+                    <x-icon name="check" class="w-4 h-4" />
+                    Save Changes
                 </button>
             </div>
         </form>
     </x-modal>
 
-    <x-modal id="create-category" title="Add Category">
+    {{-- Create Modal --}}
+    <x-modal id="create-category" title="Add Category" description="Create a new category to organize your products"
+        icon="plus">
         <form method="POST" action="{{ route('admin.categories.store') }}">
             @csrf
             @include('admin.categories._fields')
+
             <div class="mt-4 flex justify-end gap-2">
                 <button type="button" data-modal-close="create-category"
-                    class="rounded-lg border border-slate-300 text-sm font-medium px-4 py-2 text-slate-600 hover:bg-slate-50">Cancel</button>
+                    class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                    Cancel
+                </button>
                 <button type="submit"
-                    class="rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium px-4 py-2 text-white">Create</button>
+                    class="rounded-xl bg-primary-green hover:bg-primary-green-dark text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
+                    <x-icon name="plus" class="w-4 h-4" />
+                    Create Category
+                </button>
             </div>
         </form>
     </x-modal>
-
 @endsection
 
 @push('scripts')
     <script>
-        document.querySelectorAll('[data-modal-target="edit-category"]').forEach(button => {
-            button.addEventListener('click', function() {
-                const id = this.dataset.id;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Edit category modal handler
+            document.querySelectorAll('[data-modal-target="edit-category"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const form = document.getElementById('edit-category-form');
 
-                document.getElementById('edit-category-form').action =
-                    `/admin/categories/${id}`;
+                    if (form) {
+                        form.action = `/admin/categories/${id}`;
+                    }
 
-                document.getElementById('edit-name').value =
-                    this.dataset.name || '';
+                    const nameInput = document.getElementById('edit-name');
+                    if (nameInput) {
+                        nameInput.value = this.dataset.name || '';
+                    }
 
-                document.getElementById('edit-parent').value =
-                    this.dataset.parent || '';
+                    const parentSelect = document.getElementById('edit-parent');
+                    if (parentSelect) {
+                        parentSelect.value = this.dataset.parent || '';
+                    }
 
-                document.getElementById('edit-description').value =
-                    this.dataset.description || '';
+                    const descriptionInput = document.getElementById('edit-description');
+                    if (descriptionInput) {
+                        descriptionInput.value = this.dataset.description || '';
+                    }
 
-                document.getElementById('edit-active').checked =
-                    this.dataset.active == '1';
+                    const activeCheckbox = document.getElementById('edit-active');
+                    if (activeCheckbox) {
+                        activeCheckbox.checked = this.dataset.active == '1';
+                    }
+                });
+            });
+
+            // Auto-close modals on successful form submission (optional)
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function() {
+                    const closeBtn = this.querySelector('[data-modal-close]');
+                    if (closeBtn) {
+                        setTimeout(() => {
+                            closeBtn.click();
+                        }, 100);
+                    }
+                });
             });
         });
     </script>

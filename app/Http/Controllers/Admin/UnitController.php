@@ -26,7 +26,7 @@ class UnitController extends Controller implements HasMiddleware
 
     public function index(): View
     {
-        $units = $this->unitRepository->all();
+        $units = $this->unitRepository->all(['products']);
 
         return view('admin.units.index', compact('units'));
     }
