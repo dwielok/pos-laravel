@@ -13,11 +13,11 @@
     $widthClass = $widths[$maxWidth] ?? $widths['md'];
 
     $iconColors = [
-        'info' => 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
-        'success' => 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
-        'warning' => 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
-        'danger' => 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400',
-        'primary' => 'bg-primary-green-light text-primary-green dark:bg-emerald-900/30 dark:text-emerald-400',
+        'info' => 'bg-sage-100 text-sage-600',
+        'success' => 'bg-sage-100 text-sage-600',
+        'warning' => 'bg-amber-100 text-amber-600',
+        'danger' => 'bg-red-100 text-red-600',
+        'primary' => 'bg-sage-100 text-sage-600',
     ];
     $iconColor = $iconColors[$icon] ?? $iconColors['primary'];
 @endphp
@@ -35,10 +35,10 @@
             class="modal-panel w-full {{ $widthClass }} max-h-[90vh] flex flex-col
                     opacity-0 scale-95 translate-y-4 transition-all duration-300 ease-out">
 
-            <div class="bg-card rounded-2xl shadow-2xl border border-theme overflow-hidden">
+            <div class="bg-card rounded-2xl shadow-2xl border border-sage-200 overflow-hidden">
                 {{-- Header --}}
                 @if ($title)
-                    <div class="flex items-start justify-between px-6 py-5 border-b border-theme">
+                    <div class="flex items-start justify-between px-6 py-5 border-b border-sage-100">
                         <div class="flex items-start gap-4 min-w-0">
                             @if ($icon)
                                 <div
@@ -69,14 +69,14 @@
                                 </div>
                             @endif
                             <div class="min-w-0 flex-1">
-                                <h3 class="text-lg font-semibold text-primary leading-tight">{{ $title }}</h3>
+                                <h3 class="text-lg font-semibold text-sage-800 leading-tight">{{ $title }}</h3>
                                 @if ($description)
-                                    <p class="text-sm text-secondary mt-1">{{ $description }}</p>
+                                    <p class="text-sm text-sage-500 mt-1">{{ $description }}</p>
                                 @endif
                             </div>
                         </div>
                         <button type="button"
-                            class="modal-close-btn flex-shrink-0 ml-4 p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-primary-green-light transition"
+                            class="modal-close-btn flex-shrink-0 ml-4 p-1.5 rounded-lg text-sage-400 hover:text-sage-700 hover:bg-sage-50 transition"
                             data-modal-close="{{ $id }}">
                             <x-icon name="x" class="w-5 h-5" />
                         </button>
@@ -91,7 +91,7 @@
                 {{-- Footer (if actions slot is provided) --}}
                 @if (isset($actions))
                     <div
-                        class="px-6 py-4 border-t border-theme bg-primary-green-light/10 flex flex-col sm:flex-row sm:justify-end gap-2">
+                        class="px-6 py-4 border-t border-sage-100 bg-sage-50/50 flex flex-col sm:flex-row sm:justify-end gap-2">
                         {{ $actions }}
                     </div>
                 @endif
