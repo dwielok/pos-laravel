@@ -11,6 +11,6 @@
     @endif
     <span>{{ $slot }}</span>
     @if ($active)
-        <span class="ml-auto w-1 h-1 rounded-full bg-emerald-300"></span>
+        <span class="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-300"></span>
     @endif
 </a>

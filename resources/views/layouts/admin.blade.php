@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-[#f0f7f4]">
+<html lang="en" class="h-full" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="darkMode ? 'dark' : ''">
 
 <head>
     <meta charset="utf-8">
@@ -14,9 +14,10 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
-        body {
+        * {
             font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
         }
 
@@ -25,7 +26,7 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* Custom scrollbar for sidebar */
+        /* Custom scrollbar */
         .sidebar-scroll::-webkit-scrollbar {
             width: 4px;
         }
@@ -43,13 +44,54 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Modern green theme variables */
+        /* Theme variables */
         :root {
             --primary-green: #0d7c4f;
             --primary-green-dark: #0a5f3c;
             --primary-green-light: #e8f5ef;
             --primary-green-lighter: #f0faf5;
             --accent-green: #10b981;
+            --sidebar-bg-start: #0d7c4f;
+            --sidebar-bg-end: #0a5f3c;
+            --body-bg: #f0f7f4;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+        }
+
+        .dark {
+            --primary-green: #10b981;
+            --primary-green-dark: #059669;
+            --primary-green-light: #1a2e2a;
+            --primary-green-lighter: #0f1f1b;
+            --accent-green: #34d399;
+            --sidebar-bg-start: #064e3b;
+            --sidebar-bg-end: #022c22;
+            --body-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+        }
+
+        /* Apply theme variables */
+        body {
+            background-color: var(--body-bg);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .bg-card {
+            background-color: var(--card-bg);
+        }
+
+        .text-secondary {
+            color: var(--text-secondary);
+        }
+
+        .border-theme {
+            border-color: var(--border-color);
         }
 
         .bg-primary-green {
@@ -76,27 +118,68 @@
             border-color: var(--primary-green);
         }
 
+        /* Sidebar dark mode overrides */
+        .sidebar-gradient {
+            background: linear-gradient(135deg, var(--sidebar-bg-start), var(--sidebar-bg-end));
+        }
+
+        /* Mobile overlay */
+        .sidebar-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .dark .sidebar-overlay {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
         /* Smooth transitions */
         .transition-smooth {
             transition: all 0.2s ease-in-out;
+        }
+
+        /* Theme toggle animation */
+        .theme-toggle {
+            transition: transform 0.5s ease;
+        }
+
+        .theme-toggle.rotated {
+            transform: rotate(360deg);
+        }
+
+        /* Mobile menu slide animation */
+        .mobile-sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
     @stack('styles')
 </head>
 
-<body class="h-full overflow-hidden text-slate-900 antialiased bg-[#f0f7f4]">
+<body class="h-full overflow-hidden antialiased">
     <div class="flex h-full max-h-screen overflow-hidden">
 
+        {{-- Mobile Overlay --}}
+        <div id="mobile-overlay" class="lg:hidden fixed inset-0 sidebar-overlay z-30 hidden"
+            onclick="closeMobileSidebar()"></div>
+
         {{-- Sidebar --}}
-        <aside class="hidden lg:flex lg:flex-col w-64 shrink-0 bg-gradient-to-b from-[#0d7c4f] to-[#0a5f3c] text-white">
+        <aside id="sidebar"
+            class="sidebar-gradient text-white flex flex-col w-64 shrink-0 fixed lg:relative inset-y-0 left-0 z-40 mobile-sidebar -translate-x-full lg:translate-x-0">
             <!-- Brand -->
-            <div class="flex items-center gap-2 px-6 h-16 border-b border-white/10">
+            <div class="flex items-center gap-2 px-6 h-16 border-b border-white/10 flex-shrink-0">
                 <div
                     class="h-8 w-8 rounded-lg bg-white/20 backdrop-blur flex items-center justify-center font-mono-num font-semibold text-white text-sm">
-                    PO</div>
+                    PO
+                </div>
                 <span class="font-semibold text-white tracking-tight">{{ config('app.name', 'POS System') }}</span>
                 <span
-                    class="ml-auto text-[10px] font-medium text-white/60 bg-white/10 px-2 py-0.5 rounded-full">v1.0</span>
+                    class="ml-auto text-[10px] font-medium text-white/60 bg-white/10 px-2 py-0.5 rounded-full hidden sm:inline">v2.0</span>
+                <button onclick="closeMobileSidebar()" class="lg:hidden ml-2 text-white/70 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
             <!-- Navigation -->
@@ -208,7 +291,6 @@
                         @role('admin')
                             <x-nav-link href="{{ route('admin.settings.edit') }}" icon="cog"
                                 :active="request()->routeIs('admin.settings.*')">Settings</x-nav-link>
-
                             <x-nav-link href="{{ route('admin.registers.index') }}" icon="shield-check" :active="request()->routeIs('admin.registers.*')">POS
                                 Registers</x-nav-link>
                         @endrole
@@ -226,7 +308,7 @@
 
             <!-- POS Button -->
             @can('pos.access')
-                <div class="border-t border-white/10 px-4 py-3">
+                <div class="border-t border-white/10 px-4 py-3 flex-shrink-0">
                     <a href="{{ route('pos.register') ?? '#' }}"
                         class="flex items-center justify-center gap-2 rounded-lg bg-white/20 backdrop-blur hover:bg-white/30 transition px-3 py-2.5 text-sm font-medium text-white">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,56 +325,68 @@
         <div class="flex-1 flex flex-col min-w-0 h-full max-h-screen overflow-hidden">
             {{-- Topbar --}}
             <header
-                class="sticky top-0 z-20 flex items-center justify-between h-16 px-4 sm:px-6 bg-white border-b border-emerald-100/50 shadow-sm">
-                <div class="flex items-center gap-3">
-                    <button id="mobile-menu-btn"
-                        class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-primary-green transition">
+                class="sticky top-0 z-20 flex items-center justify-between h-16 px-4 sm:px-6 bg-card border-b border-theme shadow-sm flex-shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                    <button onclick="toggleMobileSidebar()"
+                        class="lg:hidden p-2 -ml-2 text-secondary hover:text-primary-green transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-lg font-semibold text-slate-900">@yield('page-title', 'Dashboard')</h1>
-                        <span class="hidden sm:inline text-xs text-slate-400 font-medium">/ @yield('breadcrumb', 'Overview')</span>
+                    <div class="flex items-center gap-2 min-w-0">
+                        <h1 class="text-lg font-semibold truncate">@yield('page-title', 'Dashboard')</h1>
+                        <span class="hidden sm:inline text-xs text-secondary font-medium truncate">/
+                            @yield('breadcrumb', 'Overview')</span>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                    <!-- Dark/Light Mode Toggle -->
+                    <button @click="darkMode = !darkMode"
+                        class="p-2 text-secondary hover:text-primary-green transition rounded-lg hover:bg-primary-green-light theme-toggle"
+                        :class="darkMode ? 'rotated' : ''">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </button>
+
                     <!-- Quick actions -->
                     <button
-                        class="hidden sm:flex p-2 text-slate-400 hover:text-primary-green transition rounded-lg hover:bg-emerald-50">
+                        class="hidden sm:flex p-2 text-secondary hover:text-primary-green transition rounded-lg hover:bg-primary-green-light relative">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
-                    </button>
-                    <button
-                        class="hidden sm:flex p-2 text-slate-400 hover:text-primary-green transition rounded-lg hover:bg-emerald-50">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                     </button>
 
                     @auth
-                        <div class="relative">
-                            <button id="user-menu-btn" class="flex items-center gap-2 text-sm focus:outline-none group">
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" @click.away="open = false"
+                                class="flex items-center gap-2 text-sm focus:outline-none group">
                                 <img src="{{ auth()->user()->avatarUrl() }}"
                                     class="w-8 h-8 rounded-full ring-2 ring-transparent group-hover:ring-emerald-200 transition"
                                     alt="">
                                 <span
-                                    class="hidden sm:block font-medium text-slate-700 group-hover:text-primary-green transition">{{ auth()->user()->name }}</span>
-                                <svg class="hidden sm:block w-4 h-4 text-slate-400 group-hover:text-primary-green transition"
+                                    class="hidden sm:block font-medium text-secondary group-hover:text-primary-green transition truncate max-w-[100px]">{{ auth()->user()->name }}</span>
+                                <svg class="hidden sm:block w-4 h-4 text-secondary group-hover:text-primary-green transition"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
-                            <div id="user-menu"
-                                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg ring-1 ring-slate-200 py-1 text-sm">
+                            <div x-show="open" x-transition
+                                class="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg ring-1 ring-theme py-1 text-sm">
                                 <a href="{{ route('profile.edit') ?? '#' }}"
-                                    class="block px-4 py-2 text-slate-700 hover:bg-emerald-50 hover:text-primary-green transition">Profile</a>
+                                    class="block px-4 py-2 text-secondary hover:bg-primary-green-light hover:text-primary-green transition">Profile</a>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
@@ -309,7 +403,7 @@
             <div class="px-4 sm:px-6 pt-4 flex-shrink-0">
                 @if (session('success'))
                     <div
-                        class="rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 text-sm flex items-center gap-2">
+                        class="rounded-lg bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 px-4 py-3 text-sm flex items-center gap-2">
                         <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -320,7 +414,7 @@
                 @endif
                 @if (session('error'))
                     <div
-                        class="rounded-lg bg-red-50 border border-red-200 text-red-800 px-4 py-3 text-sm flex items-center gap-2">
+                        class="rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 px-4 py-3 text-sm flex items-center gap-2">
                         <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -330,12 +424,60 @@
                 @endif
             </div>
 
-            <!-- Main content - flex-1 with overflow -->
+            <!-- Main content -->
             <main class="flex-1 px-4 sm:px-6 py-4 overflow-y-auto">
                 @yield('content')
             </main>
         </div>
     </div>
+
+    <script>
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+
+            const isOpen = sidebar.classList.contains('translate-x-0');
+
+            if (isOpen) {
+                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Close sidebar on resize to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                const overlay = document.getElementById('mobile-overlay');
+
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close sidebar on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMobileSidebar();
+            }
+        });
+    </script>
 
     @stack('scripts')
 </body>
