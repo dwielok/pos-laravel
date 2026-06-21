@@ -282,20 +282,22 @@
                                         </div>
                                     @endif
 
-                                    <form method="POST" action="{{ route('admin.suppliers.destroy', $supplier) }}"
-                                        class="flex justify-end gap-2">
-                                        @csrf @method('DELETE')
-                                        <button type="button" data-modal-close="delete-supplier-{{ $supplier->id }}"
-                                            class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
-                                            Cancel
-                                        </button>
-                                        <button type="submit"
-                                            class="rounded-xl bg-red-600 hover:bg-red-700 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2"
-                                            @if ($purchaseCount > 0) disabled style="opacity: 0.5; cursor: not-allowed;" @endif>
-                                            <x-icon name="trash" class="w-4 h-4" />
-                                            Delete Supplier
-                                        </button>
-                                    </form>
+                                    <div class="flex justify-end gap-2 pt-2">
+                                        <form method="POST" action="{{ route('admin.suppliers.destroy', $supplier) }}"
+                                            class="flex justify-end gap-2">
+                                            @csrf @method('DELETE')
+                                            <button type="button" data-modal-close="delete-supplier-{{ $supplier->id }}"
+                                                class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                                                Cancel
+                                            </button>
+                                            <button type="submit"
+                                                class="rounded-xl bg-red-600 hover:bg-red-700 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2"
+                                                @if ($purchaseCount > 0) disabled style="opacity: 0.5; cursor: not-allowed;" @endif>
+                                                <x-icon name="trash" class="w-4 h-4" />
+                                                Delete Supplier
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </x-modal>
                         @empty
