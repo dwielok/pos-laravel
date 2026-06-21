@@ -109,7 +109,7 @@
     </div>
 
     {{-- Payment modal --}}
-    <x-modal id="payment-modal" title="Take Payment" maxWidth="sm">
+    <x-modal-pos id="payment-modal" title="Take Payment" maxWidth="sm">
         <form id="payment-form">
             <div class="space-y-4">
                 <div>
@@ -137,10 +137,10 @@
                     Sale</button>
             </div>
         </form>
-    </x-modal>
+    </x-modal-pos>
 
     {{-- Receipt confirmation modal --}}
-    <x-modal id="receipt-modal" title="Sale Complete" maxWidth="sm">
+    <x-modal-pos id="receipt-modal" title="Sale Complete" maxWidth="sm">
         <div class="text-center py-2">
             <div
                 class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3">
@@ -164,7 +164,7 @@
                 class="rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium px-5 py-2 text-white">New
                 Sale</button>
         </div>
-    </x-modal>
+    </x-modal-pos>
 
     {{-- One-time register pairing modal --}}
     <div id="pairing-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4">
