@@ -38,13 +38,6 @@
                         </span>
                     </div>
                 </div>
-                @can('stock-adjustments.create')
-                    <a href="{{ route('admin.stock-adjustments.create') }}"
-                        class="inline-flex items-center gap-2 rounded-xl bg-primary-green hover:bg-primary-green-dark px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:shadow-md transition-all duration-200 group">
-                        <x-icon name="plus" class="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-                        New Adjustment
-                    </a>
-                @endcan
             </div>
         </div>
 
@@ -170,8 +163,7 @@
                                     By
                                 </span>
                             </th>
-                            <th
-                                class="px-6 py-3.5 text-center font-medium text-xs uppercase tracking-wider text-secondary">
+                            <th class="px-6 py-3.5 text-center font-medium text-xs uppercase tracking-wider text-secondary">
                                 <span class="flex items-center justify-center gap-1.5">
                                     <x-icon name="settings" class="w-3.5 h-3.5" />
                                     Details
