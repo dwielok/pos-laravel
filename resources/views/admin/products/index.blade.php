@@ -276,45 +276,138 @@
                                                 <x-icon name="trash" class="w-4 h-4" />
                                             </button>
 
-                                            <x-modal id="delete-product-{{ $product->id }}" title="Delete Product">
-                                                <div class="flex items-start gap-4">
+                                            <x-modal id="delete-product-{{ $product->id }}" title="Delete Product"
+                                                description="This action cannot be undone" icon="danger">
+
+                                                <div class="space-y-4">
+                                                    {{-- Warning Message --}}
                                                     <div
-                                                        class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
-                                                        <x-icon name="alert-triangle" class="w-6 h-6" />
-                                                    </div>
-                                                    <div>
-                                                        <p class="text-sm text-secondary">
-                                                            Are you sure you want to delete <strong
-                                                                class="text-primary">{{ $product->name }}</strong>?
-                                                        </p>
-                                                        <p class="text-xs text-secondary opacity-60 mt-1">
-                                                            This action will hide it from the catalog but preserve historical
-                                                            sales records.
-                                                        </p>
+                                                        class="flex items-start gap-4 p-4 bg-red-50/50 dark:bg-red-900/10 rounded-xl border border-red-200 dark:border-red-800/50">
                                                         <div
-                                                            class="mt-2 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800">
-                                                            <p
-                                                                class="text-xs text-amber-700 dark:text-amber-300 flex items-center gap-1.5">
-                                                                <x-icon name="info" class="w-3.5 h-3.5" />
-                                                                Current stock: {{ $product->totalStock() }} units
+                                                            class="flex-shrink-0 w-10 h-10 rounded-xl bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center">
+                                                            <x-icon name="alert-triangle" class="w-5 h-5" />
+                                                        </div>
+                                                        <div class="flex-1 min-w-0">
+                                                            <p class="text-sm font-medium text-red-800 dark:text-red-200">
+                                                                You are about to delete <strong
+                                                                    class="text-red-900 dark:text-red-100">{{ $product->name }}</strong>
+                                                            </p>
+                                                            <p class="text-xs text-red-600/70 dark:text-red-300/70 mt-0.5">
+                                                                This will hide it from the catalog but preserve historical sales
+                                                                records
                                                             </p>
                                                         </div>
                                                     </div>
+
+                                                    {{-- Product Details --}}
+                                                    <div
+                                                        class="grid grid-cols-2 gap-3 p-4 bg-card rounded-xl border border-theme">
+                                                        <div>
+                                                            <p
+                                                                class="text-xs font-medium text-secondary uppercase tracking-wider">
+                                                                SKU</p>
+                                                            <p class="text-sm font-mono-num text-primary mt-1">
+                                                                {{ $product->sku }}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p
+                                                                class="text-xs font-medium text-secondary uppercase tracking-wider">
+                                                                Category</p>
+                                                            <p class="text-sm text-primary mt-1">
+                                                                {{ $product->category->name ?? '—' }}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p
+                                                                class="text-xs font-medium text-secondary uppercase tracking-wider">
+                                                                Current Stock</p>
+                                                            <p class="text-sm font-mono-num font-semibold text-primary mt-1">
+                                                                {{ $product->totalStock() }} units
+                                                                @if ($product->isLowStock())
+                                                                    <span
+                                                                        class="text-xs text-amber-600 font-medium ml-1">(Low)</span>
+                                                                @endif
+                                                            </p>
+                                                        </div>
+                                                        <div>
+                                                            <p
+                                                                class="text-xs font-medium text-secondary uppercase tracking-wider">
+                                                                Status</p>
+                                                            <span
+                                                                class="inline-flex items-center gap-1.5 mt-1 px-2.5 py-0.5 rounded-full text-xs font-medium
+                    @if ($product->status === 'active') bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300
+                    @elseif($product->status === 'inactive') bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-300
+                    @else bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 @endif">
+                                                                <span
+                                                                    class="w-1.5 h-1.5 rounded-full
+                        @if ($product->status === 'active') bg-emerald-500
+                        @elseif($product->status === 'inactive') bg-gray-400
+                        @else bg-red-500 @endif">
+                                                                </span>
+                                                                {{ ucfirst($product->status) }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- Stock Warning (if applicable) --}}
+                                                    @if ($product->totalStock() > 0)
+                                                        <div
+                                                            class="flex items-start gap-3 p-3 bg-amber-50/50 dark:bg-amber-900/10 rounded-xl border border-amber-200 dark:border-amber-800/50">
+                                                            <x-icon name="info"
+                                                                class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                                                            <div>
+                                                                <p class="text-xs text-amber-700 dark:text-amber-300">
+                                                                    <span class="font-semibold">{{ $product->totalStock() }}
+                                                                        units</span> of this product are currently in stock.
+                                                                    Deleting this product will not affect existing stock
+                                                                    records.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
+                                                    {{-- Related Products Warning --}}
+                                                    {{-- @if ($product->sales()->count() > 0)
+                                                        <div
+                                                            class="flex items-start gap-3 p-3 bg-blue-50/50 dark:bg-blue-900/10 rounded-xl border border-blue-200 dark:border-blue-800/50">
+                                                            <x-icon name="info"
+                                                                class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                                                            <div>
+                                                                <p class="text-xs text-blue-700 dark:text-blue-300">
+                                                                    This product has <span
+                                                                        class="font-semibold">{{ $product->sales()->count() }}</span>
+                                                                    sales records.
+                                                                    Deleting it will preserve these records for reporting
+                                                                    purposes.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    @endif --}}
+
+                                                    {{-- Confirmation Input --}}
+                                                    <div class="space-y-2">
+                                                        <label class="text-xs font-medium text-secondary">
+                                                            Type <span
+                                                                class="font-bold text-primary">{{ $product->name }}</span> to
+                                                            confirm
+                                                        </label>
+                                                        <input type="text" id="confirm-delete-{{ $product->id }}"
+                                                            class="w-full rounded-xl border-theme px-4 py-2 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                                                            placeholder="Type product name to confirm..." autocomplete="off">
+                                                    </div>
                                                 </div>
-                                                <form method="POST" action="{{ route('admin.products.destroy', $product) }}"
-                                                    class="mt-4 flex justify-end gap-2">
-                                                    @csrf @method('DELETE')
+
+                                                <x-slot name="actions">
                                                     <button type="button"
                                                         data-modal-close="delete-product-{{ $product->id }}"
-                                                        class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                                                        class="rounded-xl border border-theme text-sm font-medium px-5 py-2.5 text-secondary hover:bg-primary-green-light hover:text-primary transition">
                                                         Cancel
                                                     </button>
-                                                    <button type="submit"
-                                                        class="rounded-xl bg-red-600 hover:bg-red-700 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
+                                                    <button type="submit" id="delete-confirm-{{ $product->id }}" disabled
+                                                        class="rounded-xl bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium px-5 py-2.5 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
                                                         <x-icon name="trash" class="w-4 h-4" />
                                                         Delete Product
                                                     </button>
-                                                </form>
+                                                </x-slot>
                                             </x-modal>
                                         @endcan
                                     </div>
