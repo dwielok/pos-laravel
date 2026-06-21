@@ -102,7 +102,7 @@ final class Money
      */
     public function formatted(): string
     {
-        return number_format($this->amount, 0, ',', '.');
+        return "Rp " . number_format($this->amount, 0, ',', '.');
     }
 
     public function __toString(): string
