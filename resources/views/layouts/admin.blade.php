@@ -93,17 +93,51 @@
                     'reports.inventory'])
                     <div>
                         <p class="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Sales</p>
+
                         @can('customers.view')
                             <x-nav-link href="{{ route('admin.customers.index') }}" icon="users"
                                 :active="request()->routeIs('admin.customers.*')">Customers</x-nav-link>
                         @endcan
+
                         @canany(['sales.view', 'sales.view-all'])
                             <x-nav-link href="{{ route('admin.sales.index') }}" icon="receipt"
                                 :active="request()->routeIs('admin.sales.*')">Transactions</x-nav-link>
                         @endcanany
-                        @canany(['reports.sales', 'reports.profit', 'reports.inventory', 'reports.export'])
-                            <x-nav-link href="{{ route('admin.reports.sales') }}" icon="document-report"
-                                :active="request()->routeIs('admin.reports.*')">Reports</x-nav-link>
+
+                        @canany(['reports.sales', 'reports.profit', 'reports.inventory'])
+                            {{-- Dropdown for Reports --}}
+                            <div x-data="{ open: {{ request()->routeIs('admin.reports.*') ? 'true' : 'false' }} }">
+                                <button @click="open = !open"
+                                    class="flex w-full items-center justify-between px-3 py-2 text-slate-300 hover:text-white transition">
+                                    <span class="flex items-center gap-3">
+                                        <x-icon name="clock" class="w-5 h-5" />
+                                        Reports
+                                    </span>
+                                    <svg class="w-4 h-4 transition" :class="open ? 'rotate-180' : ''" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+
+                                <div x-show="open" class="mt-1 ml-4 pl-4 border-l border-white/10 space-y-1">
+                                    @can('reports.sales')
+                                        <a href="{{ route('admin.reports.sales') }}"
+                                            class="block px-3 py-2 text-xs {{ request()->routeIs('admin.reports.sales') ? 'text-white' : 'text-slate-400 hover:text-white' }}">Sales
+                                            Report</a>
+                                    @endcan
+                                    @can('reports.profit')
+                                        <a href="{{ route('admin.reports.profit') }}"
+                                            class="block px-3 py-2 text-xs {{ request()->routeIs('admin.reports.profit') ? 'text-white' : 'text-slate-400 hover:text-white' }}">Profit
+                                            Report</a>
+                                    @endcan
+                                    @can('reports.inventory')
+                                        <a href="{{ route('admin.reports.inventory') }}"
+                                            class="block px-3 py-2 text-xs {{ request()->routeIs('admin.reports.inventory') ? 'text-white' : 'text-slate-400 hover:text-white' }}">Inventory
+                                            Report</a>
+                                    @endcan
+                                </div>
+                            </div>
                         @endcanany
                     </div>
                 @endcanany
