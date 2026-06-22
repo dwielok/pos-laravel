@@ -29,7 +29,7 @@ class StockAdjustmentController extends Controller implements HasMiddleware
 
     public function index(): View
     {
-        $adjustments = StockAdjustment::with(['warehouse', 'user'])
+        $adjustments = StockAdjustment::with(['warehouse', 'user', 'items'])
             ->orderByDesc('created_at')
             ->paginate(15)
             ->withQueryString();
