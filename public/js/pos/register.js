@@ -95,10 +95,10 @@ $(function () {
     function updateConnectionStatus(status, meta = {}) {
         const $indicator = $('#connection-status');
         const states = {
-            online: { text: 'Online', class: 'bg-emerald-100 text-emerald-700' },
+            online: { text: 'Online', class: 'bg-sage-100 text-sage-700' },
             offline: { text: 'Offline — sales will sync later', class: 'bg-amber-100 text-amber-800' },
-            syncing: { text: `Syncing ${meta.count || ''} sale(s)...`, class: 'bg-indigo-100 text-indigo-700' },
-            synced: { text: 'Online', class: 'bg-emerald-100 text-emerald-700' },
+            syncing: { text: `Syncing ${meta.count || ''} sale(s)...`, class: 'bg-sage-100 text-sage-700' },
+            synced: { text: 'Online', class: 'bg-sage-100 text-sage-700' },
             partial: { text: `${meta.remaining} sale(s) pending sync`, class: 'bg-amber-100 text-amber-800' },
         };
         const s = states[status] || states.offline;
@@ -150,7 +150,7 @@ $(function () {
 
         if (products.length === 0) {
             $results.append(`
-            <div class="col-span-full text-center text-slate-400 py-8">
+            <div class="col-span-full text-center text-sage-400 py-8">
                 No products found.
             </div>
         `);
@@ -164,10 +164,10 @@ $(function () {
             $results.append(`
             <button
                 type="button"
-                class="product-result flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-indigo-500 hover:shadow-md transition-all text-left"
+                class="product-result flex flex-col bg-white border border-sage-200 rounded-xl overflow-hidden hover:border-sage-400 hover:shadow-md transition-all text-left"
                 data-product-id="${p.id}"
             >
-                <div class="w-full aspect-[4/3] bg-slate-100 flex items-center justify-center shrink-0">
+                <div class="w-full aspect-[4/3] bg-sage-100 flex items-center justify-center shrink-0">
                     ${p.image_url
                     ? `
                             <img
@@ -175,11 +175,11 @@ $(function () {
                                 alt="${escapeHtml(p.name)}"
                                 class="w-full h-full object-cover"
                                 loading="lazy"
-                                onerror="this.parentElement.innerHTML='<div class=&quot;flex items-center justify-center w-full h-full text-slate-300&quot;><svg class=&quot;w-8 h-8&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;><path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;1.5&quot; d=&quot;M4 16l4-4a3 3 0 014.243 0L20 20M14 14l1-1a3 3 0 014.243 0L20 14M4 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z&quot;/></svg></div>';"
+                                onerror="this.parentElement.innerHTML='<div class=&quot;flex items-center justify-center w-full h-full text-sage-300&quot;><svg class=&quot;w-8 h-8&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot;><path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;1.5&quot; d=&quot;M4 16l4-4a3 3 0 014.243 0L20 20M14 14l1-1a3 3 0 014.243 0L20 14M4 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z&quot;/></svg></div>';"
                             >
                         `
                     : `
-                            <div class="flex items-center justify-center w-full h-full text-slate-300">
+                            <div class="flex items-center justify-center w-full h-full text-sage-300">
                                 <svg class="w-30 h-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                         d="M4 16l4-4a3 3 0 014.243 0L20 20M14 14l1-1a3 3 0 014.243 0L20 14M4 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -191,17 +191,17 @@ $(function () {
 
                 <div class="flex flex-col flex-1 p-3 w-full">
                     <div class="mb-2">
-                        <h3 class="font-medium text-sm text-slate-900 line-clamp-2 leading-tight">
+                        <h3 class="font-medium text-sm text-sage-800 line-clamp-2 leading-tight">
                             ${escapeHtml(p.name)}
                         </h3>
-                        <p class="text-xs text-slate-500 mt-1 truncate">
+                        <p class="text-xs text-sage-500 mt-1 truncate">
                             ${escapeHtml(p.sku)}
                         </p>
                     </div>
 
                     <div class="mt-auto">
                         <div class="flex items-center justify-between">
-                            <span class="font-semibold text-indigo-600 font-mono-num text-sm md:text-base">
+                            <span class="font-semibold text-sage-600 font-mono-num text-sm md:text-base">
                                 Rp ${price}
                             </span>
                         </div>
@@ -276,24 +276,24 @@ $(function () {
         const totals = cart.computeTotals();
 
         if (cart.items.length === 0) {
-            $cartItems.append('<p class="text-sm text-slate-400 text-center py-8">Cart is empty</p>');
+            $cartItems.append('<p class="text-sm text-sage-400 text-center py-8">Cart is empty</p>');
         }
 
         cart.items.forEach(item => {
             const lineTotal = ((item.product.selling_price_cents * item.quantity)).toFixed(0);
             $cartItems.append(`
-                <div class="flex items-center gap-2 py-2 border-b border-slate-100" data-product-id="${item.product.id}">
+                <div class="flex items-center gap-2 py-2 border-b border-sage-100" data-product-id="${item.product.id}">
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-slate-900 truncate">${escapeHtml(item.product.name)}</p>
-                        <p class="text-xs text-slate-400 font-mono-num">${(item.product.selling_price_cents).toFixed(0)} each</p>
+                        <p class="text-sm font-medium text-sage-800 truncate">${escapeHtml(item.product.name)}</p>
+                        <p class="text-xs text-sage-400 font-mono-num">${(item.product.selling_price_cents).toFixed(0)} each</p>
                     </div>
                     <div class="flex items-center gap-1">
-                        <button class="qty-decrease w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50">−</button>
-                        <input type="number" class="qty-input w-12 text-center text-sm rounded-md border-slate-200 font-mono-num" value="${item.quantity}" min="1">
-                        <button class="qty-increase w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50">+</button>
+                        <button class="qty-decrease w-7 h-7 rounded-md border border-sage-200 text-sage-500 hover:bg-sage-50 transition">−</button>
+                        <input type="number" class="qty-input w-12 text-center text-sm rounded-md border-sage-200 font-mono-num focus:ring-2 focus:ring-sage-400 focus:border-sage-400" value="${item.quantity}" min="1">
+                        <button class="qty-increase w-7 h-7 rounded-md border border-sage-200 text-sage-500 hover:bg-sage-50 transition">+</button>
                     </div>
-                    <p class="w-16 text-right font-mono-num text-sm font-medium">${lineTotal}</p>
-                    <button class="remove-item text-slate-300 hover:text-red-500 ml-1">&times;</button>
+                    <p class="w-16 text-right font-mono-num text-sm font-medium text-sage-800">${lineTotal}</p>
+                    <button class="remove-item text-sage-300 hover:text-red-500 ml-1 transition">&times;</button>
                 </div>
             `);
         });
@@ -454,8 +454,8 @@ $(function () {
     }
 
     function flashMessage(text, type = 'success') {
-        const colors = { success: 'bg-emerald-600', error: 'bg-red-600' };
-        const $flash = $(`<div class="fixed bottom-4 right-4 ${colors[type]} text-white text-sm font-medium px-4 py-2.5 rounded-lg shadow-lg z-50">${escapeHtml(text)}</div>`);
+        const colors = { success: 'bg-sage-600', error: 'bg-red-600' };
+        const $flash = $(`<div class="fixed bottom-4 right-4 ${colors[type]} text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-lg z-50">${escapeHtml(text)}</div>`);
         $('body').append($flash);
         setTimeout(() => $flash.fadeOut(300, () => $flash.remove()), 2500);
     }

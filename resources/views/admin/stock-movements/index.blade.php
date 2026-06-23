@@ -57,9 +57,9 @@
                             </option>
                         @endforeach
                     </select>
-                    <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
+                    {{-- <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
                         <x-icon name="chevron-down" class="w-4 h-4" />
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="relative">
@@ -73,9 +73,9 @@
                             <option value="{{ $type->value }}" @selected(($filters['type'] ?? '') === $type->value)>{{ $type->label() }}</option>
                         @endforeach
                     </select>
-                    <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
+                    {{-- <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
                         <x-icon name="chevron-down" class="w-4 h-4" />
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="relative">
