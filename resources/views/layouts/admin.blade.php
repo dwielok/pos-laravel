@@ -140,24 +140,31 @@
         .bg-sage-50 {
             background-color: var(--sage-50);
         }
+
         .bg-sage-100 {
             background-color: var(--sage-100);
         }
+
         .bg-sage-200 {
             background-color: var(--sage-200);
         }
+
         .bg-sage-300 {
             background-color: var(--sage-300);
         }
+
         .bg-sage-400 {
             background-color: var(--sage-400);
         }
+
         .bg-sage-500 {
             background-color: var(--sage-500);
         }
+
         .bg-sage-600 {
             background-color: var(--sage-600);
         }
+
         .bg-sage-700 {
             background-color: var(--sage-700);
         }
@@ -165,30 +172,39 @@
         .text-sage-50 {
             color: var(--sage-50);
         }
+
         .text-sage-100 {
             color: var(--sage-100);
         }
+
         .text-sage-200 {
             color: var(--sage-200);
         }
+
         .text-sage-300 {
             color: var(--sage-300);
         }
+
         .text-sage-400 {
             color: var(--sage-400);
         }
+
         .text-sage-500 {
             color: var(--sage-500);
         }
+
         .text-sage-600 {
             color: var(--sage-600);
         }
+
         .text-sage-700 {
             color: var(--sage-700);
         }
+
         .text-sage-800 {
             color: var(--sage-800);
         }
+
         .text-sage-900 {
             color: var(--sage-900);
         }
@@ -196,6 +212,7 @@
         .border-sage-200 {
             border-color: var(--sage-200);
         }
+
         .border-sage-300 {
             border-color: var(--sage-300);
         }
@@ -203,12 +220,15 @@
         .hover\:bg-sage-50:hover {
             background-color: var(--sage-50);
         }
+
         .hover\:bg-sage-100:hover {
             background-color: var(--sage-100);
         }
+
         .hover\:text-sage-600:hover {
             color: var(--sage-600);
         }
+
         .hover\:text-sage-700:hover {
             color: var(--sage-700);
         }
@@ -391,7 +411,8 @@
 
                 @canany(['suppliers.view', 'purchases.view', 'stock-adjustments.view', 'stock-movements.view'])
                     <div>
-                        <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-sage-400 mb-1.5">Inventory</p>
+                        <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-sage-400 mb-1.5">Inventory
+                        </p>
                         @can('suppliers.view')
                             <x-nav-link href="{{ route('admin.suppliers.index') }}" icon="truck"
                                 :active="request()->routeIs('admin.suppliers.*')">Suppliers</x-nav-link>
@@ -441,7 +462,7 @@
                                     </svg>
                                 </button>
 
-                                <div x-show="open" class="mt-1 ml-4 pl-4 border-l border-sage-200 space-y-1">
+                                <div x-cloak x-show="open" class="mt-1 ml-4 pl-4 border-l border-sage-200 space-y-1">
                                     @can('reports.sales')
                                         <a href="{{ route('admin.reports.sales') }}"
                                             class="block px-3 py-1.5 text-xs rounded-md {{ request()->routeIs('admin.reports.sales') ? 'bg-sage-100 text-sage-700' : 'text-sage-500 hover:text-sage-700 hover:bg-sage-50' }} transition">Sales
@@ -469,12 +490,11 @@
                         @role('admin')
                             <x-nav-link href="{{ route('admin.settings.edit') }}" icon="cog"
                                 :active="request()->routeIs('admin.settings.*')">Settings</x-nav-link>
-                            <x-nav-link href="{{ route('admin.registers.index') }}" icon="shield-check"
-                                :active="request()->routeIs('admin.registers.*')">POS Registers</x-nav-link>
+                            <x-nav-link href="{{ route('admin.registers.index') }}" icon="shield-check" :active="request()->routeIs('admin.registers.*')">POS
+                                Registers</x-nav-link>
                         @endrole
                         @canany(['users.view', 'roles.manage'])
-                            <x-nav-link href="{{ route('admin.users.index') }}" icon="shield-check"
-                                :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*')">Users &
+                            <x-nav-link href="{{ route('admin.users.index') }}" icon="shield-check" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*')">Users &
                                 Roles</x-nav-link>
                         @endcanany
                         @can('activity-logs.view')
@@ -525,12 +545,12 @@
                     <button @click="darkMode = !darkMode"
                         class="p-2 text-secondary hover:text-sage-600 transition rounded-lg hover:bg-sage-50 theme-toggle"
                         :class="darkMode ? 'rotated' : ''">
-                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor"
+                        <svg x-cloak x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
-                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor"
+                        <svg x-cloak x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -562,7 +582,7 @@
                                         d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
-                            <div x-show="open" x-transition
+                            <div x-cloak x-show="open" x-transition
                                 class="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg ring-1 ring-sage-200 py-1 text-sm">
                                 <a href="{{ route('profile.edit') ?? '#' }}"
                                     class="block px-4 py-2 text-secondary hover:bg-sage-50 hover:text-sage-700 transition">Profile</a>
