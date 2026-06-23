@@ -8,32 +8,32 @@
         {{-- Header Actions --}}
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <a href="{{ route('admin.sales.index') }}"
-                class="text-sm text-secondary hover:text-primary-green transition flex items-center gap-1.5 group">
+                class="text-sm text-secondary hover:text-sage-600 dark:hover:text-sage-400 transition flex items-center gap-1.5 group">
                 <x-icon name="chevron-left" class="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
                 Back to Transactions
             </a>
             <div class="flex flex-wrap gap-2">
                 @can('refund', $sale)
                     <button type="button" data-modal-target="refund-sale"
-                        class="inline-flex items-center gap-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-sm font-medium px-4 py-2 text-white shadow-sm hover:shadow-md transition">
+                        class="inline-flex items-center gap-2 rounded-xl bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-sm font-medium px-4 py-2 text-white shadow-sm hover:shadow-md transition">
                         <x-icon name="refresh" class="w-4 h-4" />
                         Process Refund
                     </button>
                 @endcan
                 @can('cancel', $sale)
                     <button type="button" data-modal-target="cancel-sale"
-                        class="inline-flex items-center gap-2 rounded-xl border border-red-300 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium px-4 py-2 transition">
+                        class="inline-flex items-center gap-2 rounded-xl border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 text-sm font-medium px-4 py-2 transition">
                         <x-icon name="x" class="w-4 h-4" />
                         Cancel Sale
                     </button>
                 @endcan
                 <a href="{{ route('admin.sales.reprint', $sale) }}" target="_blank"
-                    class="inline-flex items-center gap-2 rounded-xl border border-theme text-sm font-medium px-4 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                    class="inline-flex items-center gap-2 rounded-xl border border-theme text-sm font-medium px-4 py-2 text-secondary hover:bg-sage-50 dark:hover:bg-sage-900/20 hover:text-primary transition">
                     <x-icon name="printer" class="w-4 h-4" />
                     Print Receipt
                 </a>
                 <a href="{{ route('admin.sales.reprint-pdf', $sale) }}" target="_blank"
-                    class="inline-flex items-center gap-2 rounded-xl border border-theme text-sm font-medium px-4 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                    class="inline-flex items-center gap-2 rounded-xl border border-theme text-sm font-medium px-4 py-2 text-secondary hover:bg-sage-50 dark:hover:bg-sage-900/20 hover:text-primary transition">
                     <x-icon name="file-text" class="w-4 h-4" />
                     Download PDF
                 </a>
@@ -65,7 +65,7 @@
                 <div>
                     <div class="flex items-center gap-3">
                         <div
-                            class="w-12 h-12 rounded-xl bg-primary-green-light text-primary-green flex items-center justify-center">
+                            class="w-12 h-12 rounded-xl bg-sage-100 dark:bg-sage-800/30 text-sage-600 dark:text-sage-400 flex items-center justify-center">
                             <x-icon name="receipt" class="w-6 h-6" />
                         </div>
                         <div>
@@ -76,8 +76,8 @@
                                     {{ $sale->created_at->format('M d, Y \a\t g:i A') }}
                                 </span>
                                 @if ($sale->was_created_offline)
-                                    <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
-                                    <span class="flex items-center gap-1.5 text-amber-600">
+                                    <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
+                                    <span class="flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
                                         <x-icon name="exclamation" class="w-3.5 h-3.5" />
                                         Offline Sale
                                     </span>
@@ -106,7 +106,7 @@
                     <x-badge :color="$statusColors[$sale->status->value]" class="text-sm px-4 py-1.5">
                         <span class="flex items-center gap-1.5">
                             @if ($sale->status->value === 'completed')
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-sage-500 dark:bg-sage-400 animate-pulse"></span>
                             @endif
                             {{ $sale->status->label() }}
                         </span>
@@ -123,31 +123,31 @@
 
             {{-- Details Grid --}}
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-theme">
-                <div class="bg-primary-green-light/5 rounded-xl p-3">
+                <div class="bg-sage-50/50 dark:bg-sage-900/20 rounded-xl p-3">
                     <p class="text-xs font-medium text-secondary uppercase tracking-wider">Customer</p>
                     <p class="font-medium text-primary mt-1 flex items-center gap-2">
                         <span
-                            class="w-6 h-6 rounded-full bg-primary-green-light text-primary-green flex items-center justify-center text-xs font-bold flex-shrink-0">
+                            class="w-6 h-6 rounded-full bg-sage-100 dark:bg-sage-800/30 text-sage-600 dark:text-sage-400 flex items-center justify-center text-xs font-bold flex-shrink-0">
                             {{ $sale->customer->is_guest ? 'W' : substr($sale->customer->name, 0, 1) }}
                         </span>
                         {{ $sale->customer->is_guest ? 'Walk-in Customer' : $sale->customer->name }}
                     </p>
                 </div>
-                <div class="bg-primary-green-light/5 rounded-xl p-3">
+                <div class="bg-sage-50/50 dark:bg-sage-900/20 rounded-xl p-3">
                     <p class="text-xs font-medium text-secondary uppercase tracking-wider">Cashier</p>
                     <p class="font-medium text-primary mt-1 flex items-center gap-2">
                         <x-icon name="user-check" class="w-4 h-4 text-secondary opacity-50" />
                         {{ $sale->cashier->name }}
                     </p>
                 </div>
-                <div class="bg-primary-green-light/5 rounded-xl p-3">
+                <div class="bg-sage-50/50 dark:bg-sage-900/20 rounded-xl p-3">
                     <p class="text-xs font-medium text-secondary uppercase tracking-wider">Warehouse</p>
                     <p class="font-medium text-primary mt-1 flex items-center gap-2">
                         <x-icon name="warehouse" class="w-4 h-4 text-secondary opacity-50" />
                         {{ $sale->warehouse->name }}
                     </p>
                 </div>
-                <div class="bg-primary-green-light/5 rounded-xl p-3">
+                <div class="bg-sage-50/50 dark:bg-sage-900/20 rounded-xl p-3">
                     <p class="text-xs font-medium text-secondary uppercase tracking-wider">Payment Method</p>
                     <p class="font-medium text-primary mt-1 flex items-center gap-2">
                         <x-icon name="credit-card" class="w-4 h-4 text-secondary opacity-50" />
@@ -162,11 +162,11 @@
             <div class="px-6 py-4 border-b border-theme flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div
-                        class="w-8 h-8 rounded-xl bg-primary-green-light text-primary-green flex items-center justify-center">
+                        class="w-8 h-8 rounded-xl bg-sage-100 dark:bg-sage-800/30 text-sage-600 dark:text-sage-400 flex items-center justify-center">
                         <x-icon name="cube" class="w-4 h-4" />
                     </div>
                     <h3 class="font-semibold text-primary">Order Items</h3>
-                    <span class="text-xs text-secondary bg-primary-green-light/20 px-2.5 py-1 rounded-full">
+                    <span class="text-xs text-secondary bg-sage-100/50 dark:bg-sage-800/30 px-2.5 py-1 rounded-full border border-sage-200 dark:border-sage-700">
                         {{ $sale->items->count() }} items
                     </span>
                 </div>
@@ -176,7 +176,7 @@
             </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-theme text-sm">
-                    <thead class="bg-primary-green-light/20">
+                    <thead class="bg-sage-50 dark:bg-sage-900/20">
                         <tr>
                             <th class="px-6 py-3.5 text-left font-medium text-xs uppercase tracking-wider text-secondary">
                                 <span class="flex items-center gap-1.5">
@@ -212,14 +212,13 @@
                     </thead>
                     <tbody class="divide-y divide-theme">
                         @foreach ($sale->items as $item)
-                            <tr class="hover:bg-primary-green-light/5 transition">
+                            <tr class="hover:bg-sage-50/50 dark:hover:bg-sage-900/20 transition">
                                 <td class="px-6 py-4">
                                     <div class="min-w-0">
                                         <p class="font-medium text-primary">{{ $item->product_name_snapshot }}</p>
                                         <div class="flex items-center gap-2 text-xs text-secondary mt-0.5">
                                             <span class="font-mono-num">{{ $item->product_sku_snapshot }}</span>
-                                            <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
-                                            {{-- <span>{{ $item->product->unit->symbol ?? '—' }}</span> --}}
+                                            <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
                                         </div>
                                         @if ($item->hasPriceDeviation())
                                             <p
@@ -248,7 +247,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot class="bg-primary-green-light/10">
+                    <tfoot class="bg-sage-50/50 dark:bg-sage-900/20">
                         <tr>
                             <td colspan="4" class="px-6 py-3 text-right text-secondary font-medium">Subtotal</td>
                             <td class="px-6 py-3 text-right font-mono-num text-secondary">
@@ -258,7 +257,7 @@
                         @if ($sale->discount_cents > 0)
                             <tr>
                                 <td colspan="4" class="px-6 py-2 text-right text-secondary font-medium">Discount</td>
-                                <td class="px-6 py-2 text-right font-mono-num text-red-600">
+                                <td class="px-6 py-2 text-right font-mono-num text-red-600 dark:text-red-400">
                                     -{{ \App\Support\Money::fromUnits($sale->discount_cents)->formatted() }}
                                 </td>
                             </tr>
@@ -277,7 +276,7 @@
                         </tr>
                         <tr>
                             <td colspan="4" class="px-6 py-2 text-right text-secondary font-medium">Paid</td>
-                            <td class="px-6 py-2 text-right font-mono-num text-emerald-600 font-medium">
+                            <td class="px-6 py-2 text-right font-mono-num text-sage-600 dark:text-sage-400 font-medium">
                                 {{ \App\Support\Money::fromUnits($sale->paid_cents)->formatted() }}
                             </td>
                         </tr>
@@ -300,7 +299,7 @@
                 class="bg-card rounded-2xl border border-theme overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div class="px-6 py-4 border-b border-theme flex items-center gap-3">
                     <div
-                        class="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400 flex items-center justify-center">
+                        class="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                         <x-icon name="refresh" class="w-4 h-4" />
                     </div>
                     <h3 class="font-semibold text-primary">Refund History</h3>
@@ -310,7 +309,7 @@
                 </div>
                 <div class="divide-y divide-theme">
                     @foreach ($sale->refunds as $refund)
-                        <div class="px-6 py-4 hover:bg-primary-green-light/5 transition">
+                        <div class="px-6 py-4 hover:bg-sage-50/50 dark:hover:bg-sage-900/20 transition">
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                                 <div>
                                     <div class="flex items-center gap-3">
@@ -326,13 +325,13 @@
                                             <x-icon name="user" class="w-3.5 h-3.5" />
                                             {{ $refund->processedBy->name }}
                                         </span>
-                                        <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                                        <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
                                         <span class="flex items-center gap-1.5">
                                             <x-icon name="clock" class="w-3.5 h-3.5" />
                                             {{ $refund->created_at->format('M d, Y g:i A') }}
                                         </span>
                                         @if ($refund->reason)
-                                            <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                                            <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
                                             <span class="flex items-center gap-1.5">
                                                 <x-icon name="info" class="w-3.5 h-3.5" />
                                                 {{ $refund->reason }}
@@ -341,7 +340,7 @@
                                     </div>
                                 </div>
                                 @if ($refund->items->isNotEmpty())
-                                    <span class="text-xs text-secondary bg-primary-green-light/10 px-3 py-1 rounded-full">
+                                    <span class="text-xs text-secondary bg-sage-50 dark:bg-sage-900/20 px-3 py-1 rounded-full border border-theme">
                                         {{ $refund->items->count() }} items refunded
                                     </span>
                                 @endif
@@ -382,17 +381,17 @@
                             <x-icon name="info" class="w-4 h-4" />
                         </div>
                         <textarea name="reason" rows="2" required placeholder="Please provide a reason for cancelling this sale..."
-                            class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent transition resize-none"></textarea>
+                            class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500 transition resize-none"></textarea>
                     </div>
                 </div>
             </div>
             <div class="mt-4 flex justify-end gap-2">
                 <button type="button" data-modal-close="cancel-sale"
-                    class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                    class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-sage-50 dark:hover:bg-sage-900/20 hover:text-primary transition">
                     Keep Sale
                 </button>
                 <button type="submit"
-                    class="rounded-xl bg-red-600 hover:bg-red-700 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
+                    class="rounded-xl bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
                     <x-icon name="x" class="w-4 h-4" />
                     Cancel Sale
                 </button>
@@ -411,16 +410,16 @@
                 @foreach ($sale->items as $item)
                     @php $refundable = $item->quantityRefundable(); @endphp
                     <div
-                        class="flex items-center justify-between gap-4 p-3 rounded-xl bg-primary-green-light/5 border border-theme hover:border-primary-green/30 transition
+                        class="flex items-center justify-between gap-4 p-3 rounded-xl bg-sage-50/50 dark:bg-sage-900/20 border border-theme hover:border-sage-300 dark:hover:border-sage-600 transition
                         @if ($refundable === 0) opacity-50 @endif">
                         <div class="min-w-0 flex-1">
                             <p class="font-medium text-primary text-sm truncate">{{ $item->product_name_snapshot }}</p>
                             <div class="flex items-center gap-2 text-xs text-secondary">
                                 <span class="font-mono-num">{{ $item->product_sku_snapshot }}</span>
-                                <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                                <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
                                 <span>Refundable: <span class="font-medium text-primary">{{ $refundable }}</span> of
                                     {{ $item->quantity }}</span>
-                                <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                                <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
                                 <span>{{ $item->unitPrice()->formatted() }} each</span>
                             </div>
                         </div>
@@ -428,7 +427,7 @@
                             <div class="relative w-24">
                                 <input type="number" min="0" max="{{ $refundable }}" value="0"
                                     name="quantities[{{ $item->id }}]" {{ $refundable === 0 ? 'disabled' : '' }}
-                                    class="w-full rounded-xl border-theme px-3 py-2 bg-card text-sm font-mono-num text-right focus:ring-2 focus:ring-primary-green focus:border-transparent transition
+                                    class="w-full rounded-xl border-theme px-3 py-2 bg-card text-primary text-sm font-mono-num text-right focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition
                                     @if ($refundable === 0) opacity-50 cursor-not-allowed @endif">
                                 <span
                                     class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-secondary opacity-60">max</span>
@@ -446,7 +445,7 @@
                             <x-icon name="credit-card" class="w-4 h-4" />
                         </div>
                         <select name="refund_method"
-                            class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition appearance-none cursor-pointer">
+                            class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition appearance-none cursor-pointer">
                             <option value="cash">Cash</option>
                             <option value="card">Card</option>
                             <option value="store_credit">Store Credit</option>
@@ -463,18 +462,18 @@
                             <x-icon name="info" class="w-4 h-4" />
                         </div>
                         <input type="text" name="reason" required placeholder="Reason for refund..."
-                            class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition">
+                            class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition">
                     </div>
                 </div>
             </div>
 
             <div class="mt-4 flex justify-end gap-2">
                 <button type="button" data-modal-close="refund-sale"
-                    class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                    class="rounded-xl border border-theme text-sm font-medium px-5 py-2 text-secondary hover:bg-sage-50 dark:hover:bg-sage-900/20 hover:text-primary transition">
                     Cancel
                 </button>
                 <button type="submit"
-                    class="rounded-xl bg-amber-600 hover:bg-amber-700 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
+                    class="rounded-xl bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-sm font-medium px-5 py-2 text-white shadow-sm hover:shadow-md transition flex items-center gap-2">
                     <x-icon name="refresh" class="w-4 h-4" />
                     Process Refund
                 </button>
@@ -494,12 +493,20 @@
         }
 
         .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(16, 185, 129, 0.3);
+            background: var(--sage-300);
             border-radius: 4px;
         }
 
         .custom-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(16, 185, 129, 0.5);
+            background: var(--sage-400);
+        }
+
+        .dark .custom-scroll::-webkit-scrollbar-thumb {
+            background: var(--sage-600);
+        }
+
+        .dark .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--sage-500);
         }
     </style>
 @endpush

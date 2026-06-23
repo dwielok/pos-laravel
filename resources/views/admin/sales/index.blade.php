@@ -8,7 +8,7 @@
         {{-- Header --}}
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-primary-green-light text-primary-green flex items-center justify-center">
+                <div class="w-10 h-10 rounded-xl bg-sage-100 dark:bg-sage-800/30 text-sage-600 dark:text-sage-400 flex items-center justify-center">
                     <x-icon name="receipt" class="w-5 h-5" />
                 </div>
                 <div>
@@ -16,12 +16,12 @@
                     <div class="flex items-center gap-2 text-sm text-secondary">
                         <span>{{ $sales->total() }} transactions</span>
                         @unless (auth()->user()->can('sales.view-all'))
-                            <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                            <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
                             <span class="text-xs opacity-60">Showing your transactions only</span>
                         @endunless
-                        <span class="w-1 h-1 rounded-full bg-secondary opacity-30"></span>
+                        <span class="w-1 h-1 rounded-full bg-sage-300 dark:bg-sage-600 opacity-30"></span>
                         <span class="flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span class="w-2 h-2 rounded-full bg-sage-500 dark:bg-sage-400"></span>
                             {{ $sales->where('status', 'completed')->count() }} completed
                         </span>
                     </div>
@@ -50,7 +50,7 @@
                     </div>
                     <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
                         placeholder="Search invoice #..."
-                        class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition">
+                        class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition">
                 </div>
 
                 <div class="relative">
@@ -58,16 +58,16 @@
                         <x-icon name="check-circle" class="w-4 h-4" />
                     </div>
                     <select name="status"
-                        class="w-full rounded-xl border-theme pl-9 pr-10 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition appearance-none cursor-pointer">
+                        class="w-full rounded-xl border-theme pl-9 pr-10 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition appearance-none cursor-pointer">
                         <option value="">All statuses</option>
                         <option value="completed" @selected(($filters['status'] ?? '') === 'completed')>Completed</option>
                         <option value="cancelled" @selected(($filters['status'] ?? '') === 'cancelled')>Cancelled</option>
                         <option value="refunded" @selected(($filters['status'] ?? '') === 'refunded')>Refunded</option>
                         <option value="partially_refunded" @selected(($filters['status'] ?? '') === 'partially_refunded')>Partially Refunded</option>
                     </select>
-                    <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
+                    {{-- <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
                         <x-icon name="chevron-down" class="w-4 h-4" />
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="relative">
@@ -75,16 +75,16 @@
                         <x-icon name="warehouse" class="w-4 h-4" />
                     </div>
                     <select name="warehouse_id"
-                        class="w-full rounded-xl border-theme pl-9 pr-10 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition appearance-none cursor-pointer">
+                        class="w-full rounded-xl border-theme pl-9 pr-10 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition appearance-none cursor-pointer">
                         <option value="">All warehouses</option>
                         @foreach ($warehouses as $warehouse)
                             <option value="{{ $warehouse->id }}" @selected(($filters['warehouse_id'] ?? null) == $warehouse->id)>{{ $warehouse->name }}
                             </option>
                         @endforeach
                     </select>
-                    <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
+                    {{-- <div class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary opacity-40 pointer-events-none">
                         <x-icon name="chevron-down" class="w-4 h-4" />
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="relative">
@@ -92,7 +92,7 @@
                         <x-icon name="calendar" class="w-4 h-4" />
                     </div>
                     <input type="date" name="from" value="{{ $filters['from'] ?? '' }}" placeholder="From"
-                        class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition">
+                        class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition">
                 </div>
 
                 <div class="relative">
@@ -100,18 +100,18 @@
                         <x-icon name="calendar" class="w-4 h-4" />
                     </div>
                     <input type="date" name="to" value="{{ $filters['to'] ?? '' }}" placeholder="To"
-                        class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-primary-green-light/10 text-sm focus:ring-2 focus:ring-primary-green focus:border-transparent transition">
+                        class="w-full rounded-xl border-theme pl-9 pr-4 py-2.5 bg-sage-50/50 dark:bg-sage-900/20 text-primary text-sm focus:ring-2 focus:ring-sage-400 dark:focus:ring-sage-500 focus:border-sage-400 dark:focus:border-sage-500 transition">
                 </div>
 
                 <div class="flex gap-2">
                     <button type="submit"
-                        class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary-green hover:bg-primary-green-dark text-white text-sm font-medium px-4 py-2.5 transition shadow-sm hover:shadow-md">
+                        class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-sage-600 hover:bg-sage-700 dark:bg-sage-500 dark:hover:bg-sage-600 text-white text-sm font-medium px-4 py-2.5 transition shadow-sm hover:shadow-md">
                         <x-icon name="filter" class="w-4 h-4" />
                         Filter
                     </button>
                     @if (request()->hasAny(['search', 'status', 'warehouse_id', 'from', 'to', 'deviation_only']))
                         <a href="{{ route('admin.sales.index') }}"
-                            class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-theme text-sm font-medium px-4 py-2.5 text-secondary hover:bg-primary-green-light hover:text-primary transition">
+                            class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-theme text-sm font-medium px-4 py-2.5 text-secondary hover:bg-sage-50 dark:hover:bg-sage-900/20 hover:text-primary transition">
                             <x-icon name="refresh" class="w-4 h-4" />
                             Reset
                         </a>
@@ -124,7 +124,7 @@
                 @if (auth()->user()->can('pos-sync-audits.view'))
                     <label class="flex items-center gap-2.5 text-sm text-secondary cursor-pointer group">
                         <input type="checkbox" id="deviation-only-toggle" @checked($filters['deviation_only'] ?? false)
-                            class="w-4 h-4 rounded border-theme text-primary-green focus:ring-primary-green focus:ring-2 transition">
+                            class="w-4 h-4 rounded border-theme text-sage-600 dark:text-sage-400 focus:ring-sage-400 dark:focus:ring-sage-500 focus:ring-2 transition">
                         <span class="group-hover:text-primary transition">Show price deviations</span>
                         <span class="text-xs text-secondary opacity-60">(Synced offline at different prices)</span>
                         <x-icon name="exclamation" class="w-4 h-4 text-amber-500" />
@@ -143,7 +143,7 @@
         <div class="bg-card rounded-2xl border border-theme overflow-hidden shadow-sm hover:shadow-md transition-shadow">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-theme text-sm">
-                    <thead class="bg-primary-green-light/20">
+                    <thead class="bg-sage-50 dark:bg-sage-900/20">
                         <tr>
                             <th class="px-6 py-3.5 text-left font-medium text-xs uppercase tracking-wider text-secondary">
                                 <span class="flex items-center gap-1.5">
@@ -211,16 +211,16 @@
                                         fn($item) => $item->unit_price_cents !== $item->product->selling_price_cents,
                                     );
                             @endphp
-                            <tr class="hover:bg-primary-green-light/5 transition group cursor-pointer"
+                            <tr class="hover:bg-sage-50/50 dark:hover:bg-sage-900/20 transition group cursor-pointer"
                                 onclick="window.location='{{ route('admin.sales.show', $sale) }}'">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-2">
                                         <div
-                                            class="w-8 h-8 rounded-lg bg-primary-green-light/20 flex items-center justify-center flex-shrink-0">
-                                            <x-icon name="receipt" class="w-3.5 h-3.5 text-primary-green" />
+                                            class="w-8 h-8 rounded-lg bg-sage-100/50 dark:bg-sage-800/30 flex items-center justify-center flex-shrink-0">
+                                            <x-icon name="receipt" class="w-3.5 h-3.5 text-sage-600 dark:text-sage-400" />
                                         </div>
                                         <span
-                                            class="font-mono-num font-semibold text-primary-green">{{ $sale->invoice_number }}</span>
+                                            class="font-mono-num font-semibold text-sage-600 dark:text-sage-400">{{ $sale->invoice_number }}</span>
                                         @if ($sale->was_created_offline)
                                             <span title="Synced from an offline sale" class="flex-shrink-0">
                                                 <x-icon name="exclamation" class="w-3.5 h-3.5 text-amber-500" />
@@ -248,7 +248,7 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-2">
                                         <div
-                                            class="w-6 h-6 rounded-full bg-primary-green-light text-primary-green flex items-center justify-center text-xs font-medium flex-shrink-0">
+                                            class="w-6 h-6 rounded-full bg-sage-100 dark:bg-sage-800/30 text-sage-600 dark:text-sage-400 flex items-center justify-center text-xs font-medium flex-shrink-0">
                                             {{ $sale->customer->is_guest ? 'W' : substr($sale->customer->name, 0, 1) }}
                                         </div>
                                         <span
@@ -258,7 +258,7 @@
                                 <td class="px-6 py-4 text-secondary">{{ $sale->cashier->name }}</td>
                                 <td class="px-6 py-4">
                                     <span
-                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary-green-light/20 text-xs font-medium text-secondary">
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sage-100/50 dark:bg-sage-800/30 text-xs font-medium text-sage-700 dark:text-sage-300 border border-sage-200 dark:border-sage-700">
                                         <x-icon name="warehouse" class="w-3 h-3" />
                                         {{ $sale->warehouse->name }}
                                     </span>
@@ -275,7 +275,7 @@
                                     <x-badge :color="$statusColors[$sale->status->value]">
                                         <span class="flex items-center gap-1.5">
                                             @if ($sale->status->value === 'completed')
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                <span class="w-1.5 h-1.5 rounded-full bg-sage-500 dark:bg-sage-400 animate-pulse"></span>
                                             @endif
                                             {{ $sale->status->label() }}
                                         </span>
@@ -284,17 +284,10 @@
                                 <td class="px-6 py-4 text-center">
                                     <div class="flex justify-center gap-1">
                                         <a href="{{ route('admin.sales.show', $sale) }}"
-                                            class="p-1.5 rounded-lg text-secondary hover:bg-primary-green-light hover:text-primary-green transition"
+                                            class="p-1.5 rounded-lg text-secondary hover:bg-sage-100 dark:hover:bg-sage-800/30 hover:text-sage-700 dark:hover:text-sage-300 transition"
                                             title="View Details">
                                             <x-icon name="eye" class="w-4 h-4" />
                                         </a>
-                                        {{-- @if ($sale->status->value === 'completed')
-                                            <button onclick="event.stopPropagation(); window.print();"
-                                                class="p-1.5 rounded-lg text-secondary hover:bg-primary-green-light hover:text-primary-green transition"
-                                                title="Print Receipt">
-                                                <x-icon name="printer" class="w-4 h-4" />
-                                            </button>
-                                        @endif --}}
                                     </div>
                                 </td>
                             </tr>
@@ -303,7 +296,7 @@
                                 <td colspan="8" class="px-6 py-16 text-center">
                                     <div class="flex flex-col items-center">
                                         <div
-                                            class="w-20 h-20 rounded-2xl bg-primary-green-light/20 flex items-center justify-center mb-4">
+                                            class="w-20 h-20 rounded-2xl bg-sage-100/30 dark:bg-sage-800/20 flex items-center justify-center mb-4">
                                             <x-icon name="receipt" class="w-10 h-10 text-secondary opacity-30" />
                                         </div>
                                         <p class="text-lg font-medium text-primary">No transactions found</p>
@@ -314,7 +307,6 @@
                                                 Start making sales to see transactions here
                                             @endif
                                         </p>
-
                                     </div>
                                 </td>
                             </tr>
