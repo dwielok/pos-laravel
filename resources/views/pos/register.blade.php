@@ -45,45 +45,59 @@
         .bg-sage-50 {
             background-color: var(--sage-50);
         }
+
         .bg-sage-100 {
             background-color: var(--sage-100);
         }
+
         .bg-sage-200 {
             background-color: var(--sage-200);
         }
+
         .bg-sage-500 {
             background-color: var(--sage-500);
         }
+
         .bg-sage-600 {
             background-color: var(--sage-600);
         }
+
         .text-sage-600 {
             color: var(--sage-600);
         }
+
         .text-sage-700 {
             color: var(--sage-700);
         }
+
         .border-sage-200 {
             border-color: var(--sage-200);
         }
+
         .hover\:bg-sage-50:hover {
             background-color: var(--sage-50);
         }
+
         .hover\:bg-sage-100:hover {
             background-color: var(--sage-100);
         }
+
         .hover\:text-sage-700:hover {
             color: var(--sage-700);
         }
+
         .focus\:ring-sage-400:focus {
             --tw-ring-color: var(--sage-400);
         }
+
         .focus\:ring-sage-500:focus {
             --tw-ring-color: var(--sage-500);
         }
+
         .focus\:border-sage-400:focus {
             border-color: var(--sage-400);
         }
+
         .focus\:border-sage-500:focus {
             border-color: var(--sage-500);
         }
@@ -98,7 +112,8 @@
         {{-- Topbar --}}
         <header class="flex items-center justify-between px-4 h-14 bg-sage-800 text-white shrink-0">
             <div class="flex items-center gap-3">
-                <a href="{{ route('admin.dashboard') ?? '#' }}" class="text-sage-300 hover:text-white text-sm transition">&larr;
+                <a href="{{ route('admin.dashboard') ?? '#' }}"
+                    class="text-sage-300 hover:text-white text-sm transition">&larr;
                     Back</a>
                 <span class="font-semibold">POS Register</span>
             </div>
@@ -117,8 +132,7 @@
             <div class="w-1/2 flex flex-col border-r border-sage-200 bg-white">
                 <div class="p-4 border-b border-sage-100">
                     <div class="relative">
-                        <x-icon name="search"
-                            class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-sage-400" />
+                        <x-icon name="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-sage-400" />
                         <input type="text" id="product-search-input" autofocus
                             placeholder="Search by name, SKU, or scan barcode..."
                             class="w-full rounded-xl border-sage-200 pl-9 text-sm focus:ring-2 focus:ring-sage-400 focus:border-sage-400">
@@ -134,7 +148,8 @@
             <div class="w-1/2 flex flex-col bg-sage-50">
                 <div class="flex items-center justify-between px-4 py-3 border-b border-sage-200 bg-white">
                     <h2 class="font-semibold text-sage-800">Current Sale</h2>
-                    <button id="clear-cart-btn" type="button" class="text-xs text-sage-400 hover:text-red-600 transition">Clear
+                    <button id="clear-cart-btn" type="button"
+                        class="text-xs text-sage-400 hover:text-red-600 transition">Clear
                         cart</button>
                 </div>
 
@@ -153,8 +168,7 @@
                         <span>Tax</span>
                         <span id="cart-tax" class="font-mono-num">0.00</span>
                     </div>
-                    <div
-                        class="flex justify-between text-lg font-semibold text-sage-800 pt-2 border-t border-sage-100">
+                    <div class="flex justify-between text-lg font-semibold text-sage-800 pt-2 border-t border-sage-100">
                         <span>Total</span>
                         <span id="cart-total" class="font-mono-num">0.00</span>
                     </div>
@@ -205,8 +219,7 @@
     {{-- Receipt confirmation modal --}}
     <x-modal-pos id="receipt-modal" title="Sale Complete" maxWidth="sm">
         <div class="text-center py-2">
-            <div
-                class="w-12 h-12 rounded-full bg-sage-100 text-sage-600 flex items-center justify-center mx-auto mb-3">
+            <div class="w-12 h-12 rounded-full bg-sage-100 text-sage-600 flex items-center justify-center mx-auto mb-3">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
@@ -253,7 +266,9 @@
     <script src="{{ asset('js/pos/register.js') }}"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(console.error);
+            navigator.serviceWorker.register('/sw.js', {
+                scope: '/pos/'
+            }).catch(console.error);
         }
     </script>
 </body>
