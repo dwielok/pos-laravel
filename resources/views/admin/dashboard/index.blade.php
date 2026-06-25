@@ -14,18 +14,22 @@
             </div>
             <form method="GET" class="w-full sm:w-auto">
                 <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sage-400 pointer-events-none" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
                     <select name="warehouse_id" onchange="this.form.submit()"
-                        class="w-full sm:w-auto pl-9 pr-4 py-2 bg-card border border-sage-200 rounded-lg text-sm focus:ring-2 focus:ring-sage-400 focus:border-sage-400 transition appearance-none cursor-pointer text-sage-800">
+                        class="w-full sm:w-auto pl-9 pr-10 py-2.5 bg-card border border-sage-200 rounded-xl text-sm focus:ring-2 focus:ring-sage-400 focus:border-sage-400 transition appearance-none cursor-pointer text-sage-800 dark:text-sage-200 dark:bg-sage-800/30 dark:border-sage-700">
                         <option value="">All Warehouses</option>
                         @foreach ($warehouses as $warehouse)
                             <option value="{{ $warehouse->id }}" @selected($warehouseId == $warehouse->id)>{{ $warehouse->name }}
                             </option>
                         @endforeach
                     </select>
-                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sage-400" fill="none"
+                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-sage-400 pointer-events-none" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </div>
             </form>
